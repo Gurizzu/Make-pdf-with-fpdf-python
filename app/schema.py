@@ -43,6 +43,7 @@ class SuratKematianForm(BaseModel):
     tanggal_meninggal_almarhum:str
     jam_meninggal_almarhum:str
     tempat_meninggal_almarhum:str
+    jenis_kelamin_almarhum:str
     penyebab_kematian_almarhum:str
     nama_pelapor_kematian:str
     jenis_kelamin_pelapor:str
@@ -56,7 +57,8 @@ class SuratKematianForm(BaseModel):
               "nomor_surat": "202/0013/TR/1/2021",
               "nama_almarhum": "Winata",
               "nama_bapak_almarhum": "Pulan",
-              "tempat_tanggal_lahir_almarhum": "Laki-Laki",
+              "jenis_kelamin_almarhum" : "Laki-Laki",
+              "tempat_tanggal_lahir_almarhum": "Samarinda, 08 Oktober 2022",
               "alamat_lengkap_almarhum": "Kp. Nagrak RT.002 RW 008, Desa Sukajaya, Kecamatan Ciparay, Kabupaten Bandung Barat",
               "agama_almarhum": "Islam",
               "status_perkawinan_almarhum": "Kawin",

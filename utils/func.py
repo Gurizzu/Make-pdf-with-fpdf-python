@@ -289,7 +289,7 @@ async def footer2(pdf:FPDF,data:dict):
 async def run_nikah(pdf:FPDF,foot:dict,data:dict,output:str):
     await header(pdf=pdf)
     await surat_nikah(pdf=pdf,data=data)
-    await footer2(data=foot)
+    await footer2(pdf=pdf, data=foot)
     pdf.output(f"{output}.pdf")
     
     
@@ -303,7 +303,7 @@ async def run_domisili(pdf:FPDF,foot:dict,data:dict,output:str):
 async def run_kematian(pdf:FPDF,foot:dict,data:dict,output:str):
     await header(pdf=pdf)
     await surat_keterangan_kematian(pdf=pdf,data=data)
-    await footer2(pdf=pdf,foot=foot)
+    await footer2(pdf=pdf,data=foot)
     pdf.output(f"{output}.pdf")    
 
 
