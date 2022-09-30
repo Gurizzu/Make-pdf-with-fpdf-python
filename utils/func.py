@@ -89,7 +89,15 @@ async def surat_nikah(pdf:FPDF,data:dict):
                 pdf.cell(5,5,border=0)
                 pdf.cell(50,5,border=0,align="L",txt=key)
                 pdf.cell(3,5,border=0,align="L", txt=":")
-                pdf.multi_cell(77,5,border=0,align="L",txt=str(val),ln=1)    
+                pdf.multi_cell(77,5,border=0,align="L",txt=str(val),ln=1) 
+                
+    pdf.ln(3)
+    pdf.set_font("arial","",10)
+    pdf.multi_cell(0,h=4 ,align="L",border=0,txt="""\t\t\t\t\t\t\t\t\tPemilik nama tersebut di atas adalah benar warga kami Desa Cikoneng, Kecamatan Ciparay, Kabupaten Bandung dan sepengatuhan kami yang bersangkutan berkelakuan baik. Surat keterangan pengantar ini diberikan untuk keperluan pengurusan surat nikah.""",ln=1)
+
+    pdf.ln(3)
+    pdf.multi_cell(0,h=4 ,align="L",border=0,txt="""\t\t\t\t\t\t\t\t\tDemikian surat keterangan ini dibuat dengan sebenarnya dan diberikan untuk dapat 
+    dipergunakan sebagaimana mestinya.""",ln=1)   
         
 
 #body template for surat_domisili    
