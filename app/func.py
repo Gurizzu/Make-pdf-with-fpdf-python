@@ -1,5 +1,6 @@
 from fpdf import FPDF
 
+
 async def header(pdf:FPDF):
     pdf.set_margins(27, 27)
     pdf.add_page()
