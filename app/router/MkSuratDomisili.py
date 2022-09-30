@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, status
 from .. import schema , database
 from fpdf import FPDF
 from utils import func
+from fastapi.responses import FileResponse
 
 
 router = APIRouter(
@@ -26,6 +27,7 @@ async def make_surat_domisili(makesurat:schema.SuratDomisiliForm):
         }
         
         await func.run_domisili(data=payload, foot=footer_surat , output=saved_file_name ,pdf=pdf)
+        # return FileResponse(path=f"{saved_file_name}.pdf",filename=f"{saved_file_name}.pdf")
+    
     except:
         raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="Not connected")
-    return {"Massage" : "Thanks for Download"}
