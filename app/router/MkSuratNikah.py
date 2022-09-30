@@ -16,7 +16,7 @@ async def make_surat_Nikah(makesurat:schema.SuratNikahForm):
         pdf = FPDF()
         payload = await database.make_Nikah(makesurat.dict())
         
-        save_download_path = "download/Surat_Nikah"
+        save_download_path = "download/surat_nikah"
         file_name = payload.get("_id")
         saved_file_name = save_download_path + "pdf_" + file_name
 

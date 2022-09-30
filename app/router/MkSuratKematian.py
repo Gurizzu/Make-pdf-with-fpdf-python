@@ -14,7 +14,7 @@ async def make_surat_kematian(makesurat:schema.SuratKematianForm):
         pdf = FPDF()
         payload = await database.make_kematian(makesurat.dict())
         
-        save_download_path = "download/Surat_Kematian/"
+        save_download_path = "download/surat_kematian/"
         file_name = payload.get("_id")
         saved_file_name = save_download_path + "pdf_" + file_name
 

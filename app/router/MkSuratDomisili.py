@@ -17,7 +17,7 @@ async def make_surat_domisili(makesurat:schema.SuratDomisiliForm):
         pdf = FPDF()
         payload = await database.make_domisisli(makesurat.dict())
         
-        save_download_path = "download/Surat_domisili/"
+        save_download_path = "download/surat_domisili/"
         file_name = payload.get("_id")
         saved_file_name = save_download_path + "pdf_" + file_name
 

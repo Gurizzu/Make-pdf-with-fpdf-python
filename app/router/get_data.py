@@ -13,6 +13,7 @@ router = APIRouter(
 
 @router.get("/v1/generate/{form}/{id}")
 async def all_surat(form:str, id:str):
+    form = form.lower()
     pdf = FPDF()
     data = await database.find_one(form,id)
     
