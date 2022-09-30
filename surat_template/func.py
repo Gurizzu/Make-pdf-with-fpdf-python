@@ -1,9 +1,7 @@
 from fpdf import FPDF
- 
-pdf = FPDF(orientation="P", format="A4")
 
 
-def surat_nikah(data:dict):
+def surat_nikah(pdf:FPDF,data:dict):
     pdf.set_margins(25, 25)
     pdf.ln(5)
     pdf.set_font("arial","BU",10)
@@ -81,7 +79,7 @@ def surat_nikah(data:dict):
                 pdf.multi_cell(77,5,border=0,align="L",txt=str(val),ln=1)    
         
     
-def surat_domisili(data:dict):
+def surat_domisili(pdf:FPDF,data:dict):
     
     data_diri = [{
         "Nama":data.get('nama_pembuat_surat'),
@@ -97,7 +95,7 @@ def surat_domisili(data:dict):
     pdf.ln(5)
     pdf.set_font("arial","BU",10)
     pdf.cell(0,h=8 ,align="C",border=0,txt="SURAT KETERANGAN DOMISILI",ln=1)
-    no_nikah = "202/0013/TR/1/2021" # Can be replace with no nikah in database 
+    no_nikah = data.get("nomor_surat") # Can be replace with no nikah in database 
     
     pdf.set_font("arial","",13)
     pdf.cell(70,h=8 ,align="R",border=0,txt="Nomor :")
@@ -123,7 +121,7 @@ def surat_domisili(data:dict):
     pdf.multi_cell(0,h=4 ,align="L",border=0,txt="""Demikian surat keterangan ini dibuat, atas perhatian dan kerjasamanya kami ucapkan terimakasih.""",ln=1)
     pdf.ln(5)
     
-def surat_keterangan_kematian(data:dict):
+def surat_keterangan_kematian(pdf:FPDF,data:dict):
     
     data_orang_meninggal = [{
         "Nama" : data.get("nama_almarhum"),
@@ -223,7 +221,7 @@ def surat_keterangan_kematian(data:dict):
     pdf.ln(1)
                 
     
-def header():
+def header(pdf:FPDF):
     pdf.set_margins(27, 27)
     pdf.add_page()
     
@@ -248,7 +246,7 @@ def header():
 
 
     
-def footer2(data:dict):
+def footer2(pdf:FPDF,data:dict):
     pdf.set_font("arial","",10)
     pdf.ln(2)
     pdf.set_x(125)
@@ -263,21 +261,21 @@ def footer2(data:dict):
     pdf.multi_cell(60,h=4 ,align="C", border=0, txt=data.get("nip_penandatangan_surat"),ln=1)
     
     
-def run_nikah(foot:dict,data:dict,output:str):
+def run_nikah(pdf:FPDF,foot:dict,data:dict,output:str):
     header()
     surat_nikah(data)
     footer2(foot)
     pdf.output(f"{output}.pdf")
     
     
-def run_domisili(foot:dict,data:dict,output:str):
+def run_domisili(pdf:FPDF,foot:dict,data:dict,output:str):
     header()
     surat_domisili(data)
     footer2(foot)
     pdf.output(f"{output}.pdf")
     
     
-def run_kematian(foot:dict,data:dict,output:str):
+def run_kematian(pdf:FPDF,foot:dict,data:dict,output:str):
     header()
     surat_keterangan_kematian(data)
     footer2(foot)
