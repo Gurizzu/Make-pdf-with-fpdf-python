@@ -83,8 +83,15 @@ def surat_nikah(data:dict):
     
 def surat_domisili(data:dict):
     
-    data_diri = ["Nama","NIK", "Jenis Kelamin", "Tempat, Tanggal Lahir", "Agama", "Pekerjaan", "Status Perkawinan", "Alamat"]
-    
+    data_diri = [{
+        "Nama":data.get('nama_pembuat_surat'),
+        "Jenis Kelamin":data.get("jenis_kelamin_pembuat_surat"),
+        "Tempat, Tanggal Lahir":data.get("tempat_tanggal_lahir_pembuat_surat"),
+        "Agama":data.get("agama_pembuat_surat"),
+        "Pekerjaan":data.get("pekerjaan_pembuat_surat"),
+        "Status Perkawinan":data.get("status_perkawinan_pembuat_surat"),
+        "Alamat" : data.get("alamat_pembuat_surat"),
+    }]
     
     pdf.set_margins(25, 25)
     pdf.ln(5)
@@ -102,10 +109,12 @@ def surat_domisili(data:dict):
     pdf.ln(5)
     
     for datdir in data_diri:
-        pdf.cell(10,8,border=0)
-        pdf.cell(50,8,border=0,align="L",txt=datdir)
-        pdf.cell(3,8,border=0,align="L", txt=":")
-        pdf.multi_cell(97,8,border=0,align="L",ln=1,txt="Contoh")
+        for key, val in datdir.items():
+            pdf.cell(10,8,border=0)
+            pdf.cell(50,8,border=0,align="L",txt=key)
+            pdf.cell(3,8,border=0,align="L", txt=":")
+            pdf.multi_cell(97,8,border=0,align="L",ln=1,txt=str(val))
+    
         
     pdf.ln(5)
     dusun = "Dusun Sukamaju RT 11 RW 001"
@@ -114,17 +123,41 @@ def surat_domisili(data:dict):
     pdf.multi_cell(0,h=4 ,align="L",border=0,txt="""Demikian surat keterangan ini dibuat, atas perhatian dan kerjasamanya kami ucapkan terimakasih.""",ln=1)
     pdf.ln(5)
     
-def surat_keterangan_kematian():
+def surat_keterangan_kematian(data:dict):
     
-    data_orang_meninggal = ["Nama","Tempat, Tanggal Lahir", "Jenis Kelamin","Alamat", "Agama", "Status Perkawinan", "Pekerjaan", "Kewarganegaraan", "NIK"]
-    waktu = ["Tanggal" , "Pukul/Jam" , "Bertempat di" , "Penyebab Kematian"]
-    pelapor = ["Nama" , "Jenis Kelamin" , "Alamat" , "Hubungan Dengan Alm/Almh"]
+    data_orang_meninggal = [{
+        "Nama" : data.get("nama_almarhum"),
+        "Tempat, Tanggal Lahir" : data.get("tempat_tanggal_lahir_almarhum"),
+        "Jenis Kelamin" : data.get("jenis_kelamin_almarhum"),
+        "Alamat" : data.get("alamat_lengkap_almarhum"),
+        "Agama" : data.get("agama_almarhum"),
+        "Status Perkawinan": data.get("status_perkawinan_almarhum"),
+        "Pekerjaan" : data.get("pekerjaan_almarhum"),
+        "Kewarganegaraan" : data.get("kewarganegaraan_almarhum"),
+        "nik_almarhum" : data.get("nik_almarhum")
+        
+    }]
+    
+    waktu = [{
+        "Tanggal": data.get("tanggal_meninggal_almarhum"),
+        "Pukul/Jam": data.get("jam_meninggal_almarhum"),
+        "Bertempat di": data.get("tempat_meninggal_almarhum"),
+        "Penyebab Kematian": data.get("penyebab_kematian_almarhum"),
+    }]
+    
+    pelapor = [{
+        "Nama": data.get("nama_pelapor_kematian"),
+        "Jenis": data.get("jenis_kelamin_pelapor"),
+        "Alamat": data.get("alamat_lengkap_pelapor"),
+        "Hubungan Dengan Alm/Almh": data.get("hubungan_pelapor_dengan_almarhum"),
+        
+    }]
     
     pdf.ln(1)
     pdf.set_font("arial","BU",10)
     pdf.cell(0,h=8 ,align="C",border=0,txt="SURAT KETERANGAN KEMATIAN",ln=1)
     
-    no_nikah = "202/0013/TR/1/2021" # Can be replace with no nikah in database 
+    no_nikah = data.get("nomor_surat") # Can be replace with no nikah in database 
     
     pdf.set_font("arial","",10)
     pdf.cell(70,h=8 ,align="R",border=0,txt="Nomor :")
@@ -138,17 +171,19 @@ def surat_keterangan_kematian():
     
     pdf.set_margins(25, 25)
     
-    pulan = "Pulan" #Placeholder for database
+    pulan = data.get("nama_bapak_almarhum") #Placeholder for database
     
     for datorgal in data_orang_meninggal:
-        if datorgal == "Nama":
-            pdf.cell(50,h=6,border=0,align="L",txt=datorgal)
-            pdf.cell(3,6,border=0,align="L", txt=":")
-            pdf.multi_cell(107,h=6,border=0,align="L",txt=f"Contoh bin {pulan}",ln=1)
-        else:
-            pdf.cell(50,h=6,border=0,align="L",txt=datorgal)
-            pdf.cell(3,6,border=0,align="L", txt=":")
-            pdf.multi_cell(107,h=6,border=0,align="L",txt="Contoh",ln=1)
+        for key, val in datorgal.items():
+            if key == "Nama":
+                pdf.cell(50,h=6,border=0,align="L",txt=key)
+                pdf.cell(3,6,border=0,align="L", txt=":")
+                pdf.multi_cell(107,h=6,border=0,align="L",txt=f"{val} bin {pulan}",ln=1)
+            else:
+                pdf.cell(50,h=6,border=0,align="L",txt=key)
+                pdf.cell(3,6,border=0,align="L", txt=":")
+                pdf.multi_cell(107,h=6,border=0,align="L",txt=str(val),ln=1)
+    
     
     
     pdf.ln(1)
@@ -159,20 +194,29 @@ def surat_keterangan_kematian():
     pdf.set_font(family='arial', style="" , size=8)
     pdf.cell(txt="pada :", border=0 , ln=True)
     pdf.ln(1)
+    
+    
     # Second Form In Surat Kematian
     for wak in waktu:
-        pdf.cell(50,6, align="L", border=0, txt=wak)
-        pdf.cell(3,6,border=0, align="R" ,txt=":")
-        pdf.multi_cell(0,6, align="L", border=0, ln=1, txt="Contoh")
+        for key,val in wak.items():
+            pdf.cell(50,6, align="L", border=0, txt=key)
+            pdf.cell(3,6,border=0, align="R" ,txt=":")
+            pdf.multi_cell(0,6, align="L", border=0, ln=1, txt=str(val))
+            
     pdf.ln(1)
     # Some Text
     pdf.multi_cell(0,h=3,align="L", txt='            Surat keterangan ini di buat berdasarkan laporan dari :', ln=True)
     pdf.ln(1)
-    # Third Form in Surat Kematina
+    
+    
+    # Third Form in Surat Kematian
     for pel in pelapor:
-        pdf.cell(50,6, align="L", border=0, txt=pel)
-        pdf.cell(3,6,border=0, align="R" ,txt=":")
-        pdf.multi_cell(0,6, align="L", border=0, ln=1, txt="Contoh")
+        for key,val in pel.items():
+            pdf.cell(50,6, align="L", border=0, txt=key)
+            pdf.cell(3,6,border=0, align="R" ,txt=":")
+            pdf.multi_cell(0,6, align="L", border=0, ln=1, txt=str(val))
+            
+            
     pdf.ln(1)
     # Surat Kematia Footer
     pdf.multi_cell(0,h=3,align="L", txt='            Demikian surat keterangan ini kami buat, untuk dipergunakan sebagaimana mestinya.', ln=True)
@@ -226,5 +270,17 @@ def run_nikah(foot:dict,data:dict,output:str):
     pdf.output(f"{output}.pdf")
     
     
+def run_domisili(foot:dict,data:dict,output:str):
+    header()
+    surat_domisili(data)
+    footer2(foot)
+    pdf.output(f"{output}.pdf")
+    
+    
+def run_kematian(foot:dict,data:dict,output:str):
+    header()
+    surat_keterangan_kematian(data)
+    footer2(foot)
+    pdf.output(f"{output}.pdf")    
 
 
