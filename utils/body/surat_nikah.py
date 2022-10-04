@@ -22,11 +22,11 @@ async def surat_nikah(pdf:FPDF,data:dict):
     
     # receive data from database
     mempelai = [{
-        "Nama Lengkap": data.get("calon_suami_istri").get("nama_calon_istri"),
-        "Tempat, Tanggal Lahir" : str(data.get("calon_suami_istri").get("tempat_lahir")) + ", " + str(data.get("calon_suami_istri").get("tanggal_lahir")),
+        "Nama Lengkap": data.get("umum").get("nama_lengkap"),
+        "Tempat, Tanggal Lahir" : str(data.get("umum").get("tempat_lahir")) + ", " + str(data.get("umum").get("tanggal_lahir")),
         "Jenis Kelamin" : data.get("umum").get("jenis_kelamin"),
-        "Agama": data.get('calon_suami_istri').get("agama"),
-        "Pekerjaan" : data.get("calon_suami_istri").get("pekerjaan"),
+        "Agama": data.get('umum').get("agama"),
+        "Pekerjaan" : data.get("umum").get("pekerjaan"),
         "Status" : data.get("umum").get("status_perkawinan"),
         "Dusun" : data.get("umum").get("dusun"),
         

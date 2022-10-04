@@ -12,6 +12,7 @@ surat_pengantar_nikah = mydb["surat_pengantar_nikah"]
 surat_keterangan_usaha = mydb["surat_keterangan_usaha"]
 surat_keterangan_belum_pernah_nikah = mydb["surat_keterangan_belum_pernah_nikah"]
 surat_keterangan_pindah = mydb["surat_keterangan_pindah"]
+pengaturan_footer_surat = mydb["v_pengaturan_surat"]
 
 async def make_domisisli(data:dict):
     surat_keterangan_domisili.insert_one(data)
@@ -96,6 +97,15 @@ async def find_one(form:str,id:str):
     
     else:
         return False
+
+async def get_footer_by_form(form:str) -> dict:
+    query = {"form" : form}
+    footer = pengaturan_footer_surat.find_one(query)
+    if not footer:
+        return {}
+
+    return footer
+    
         
     
 # data = {"Menjadi" : "menjadi"}

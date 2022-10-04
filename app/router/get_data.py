@@ -1,3 +1,4 @@
+import json
 from fastapi import APIRouter, HTTPException, status
 from .. import schema , database
 from fpdf import FPDF
@@ -34,13 +35,14 @@ async def all_surat(form:str, id:str):
     file_name = payload.get("_id")
     saved_file_name = save_download_path + "pdf_" + file_name
     response_name = f"{nama_surat}_{nama_pembuat}_{tanggal}"
-    footer_surat = {
-        "penanda_tangan_surat" : payload.get("penanda_tangan_surat"),
-        "nip_penandatangan_surat" : payload.get("nip_penandatangan_surat")
-    }
-    
+    footer_surat = await database.get_footer_by_form(form=form)
+
+    if not footer_surat:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Cant print")
+
+    footer_surat = footer_surat.get("id_tanda_tangan")[0]
 
     await func.run_surat(data=payload, foot=footer_surat , output=saved_file_name ,pdf=pdf, form=form)
     return FileResponse(path=f"{saved_file_name}.pdf", filename=f"{response_name}.pdf")
-    return {"Massage" : "Susses"}
+    # return {"Massage" : "Susses"}
     
