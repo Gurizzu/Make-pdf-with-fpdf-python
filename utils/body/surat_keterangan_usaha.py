@@ -7,11 +7,11 @@ async def surat_keterangan_usaha(pdf:FPDF, data:dict):
     pdf.set_font("arial","BU",10)
     pdf.cell(0,h=7 ,align="C",border=0,txt="SURAT KETERANGAN USAHA",ln=1)
     
-    no_nikah = str(data.get("nomor_surat")) # Can be replace with no nikah in database 
+    no_surat_keterangan_usaha = str(data.get("nomor_surat")) # Can be replace with no nikah in database 
     pdf.set_font("arial","",10)
     pdf.cell(70,h=8 ,align="R",border=0,txt="Nomor :")
     pdf.set_text_color(255,0,0)
-    pdf.cell(90,h=8 ,align="L",border=0,txt=str(no_nikah))
+    pdf.cell(90,h=8 ,align="L",border=0,txt=str(no_surat_keterangan_usaha))
     pdf.set_text_color(0,0,0)
     pdf.ln(13)
     pdf.set_font("arial","",9)

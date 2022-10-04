@@ -7,11 +7,11 @@ async def surat_keterangan_kematian(pdf:FPDF,data:dict):
     pdf.set_font("arial","BU",10)
     pdf.cell(0,h=8 ,align="C",border=0,txt="SURAT KETERANGAN KEMATIAN",ln=1)
     
-    no_nikah = data.get("nomor_surat") # Can be replace with no nikah in database 
+    no_surat_kematian = data.get("nomor_surat") # Can be replace with no nikah in database 
     
     pdf.set_font("arial","",10)
     pdf.cell(70,h=8 ,align="R",border=0,txt="Nomor :")
-    pdf.cell(80,h=8 ,align="L",border=0,txt=str(no_nikah))
+    pdf.cell(80,h=8 ,align="L",border=0,txt=str(no_surat_kematian))
     
     pdf.set_font("arial","",8)
     pdf.set_margins(27, 27)
