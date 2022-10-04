@@ -11,6 +11,6 @@ async def footer2(pdf:FPDF,data:dict):
 
     pdf.cell(0,h=17 ,align="L", border=0,ln=1)
     pdf.set_x(125)
-    pdf.multi_cell(60,h=4 ,align="C", border=0, txt=data.get("penanda_tangan_surat"),ln=1)
+    pdf.multi_cell(60,h=4 ,align="C", border=0, txt=str(data.get("penanda_tangan_surat")),ln=1)
     pdf.set_x(125)
-    pdf.multi_cell(60,h=4 ,align="C", border=0, txt=data.get("nip_penandatangan_surat"),ln=1)
+    pdf.multi_cell(60,h=4 ,align="C", border=0, txt=str(data.get("nip_penandatangan_surat")),ln=1)

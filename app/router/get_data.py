@@ -34,7 +34,9 @@ async def all_surat(form:str, id:str):
         "nip_penandatangan_surat" : payload.get("nip_penandatangan_surat")
     }
     
-    
+    print(payload)
+
     await func.run_surat(data=payload, foot=footer_surat , output=saved_file_name ,pdf=pdf, form=form)
-    return FileResponse(f"{saved_file_name}.pdf")
+    # return FileResponse(f"{saved_file_name}.pdf")
+    return {"Massage" : "Susses"}
     

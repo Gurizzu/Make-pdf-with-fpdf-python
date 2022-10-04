@@ -11,7 +11,7 @@ async def surat_keterangan_kematian(pdf:FPDF,data:dict):
     
     pdf.set_font("arial","",10)
     pdf.cell(70,h=8 ,align="R",border=0,txt="Nomor :")
-    pdf.cell(80,h=8 ,align="L",border=0,txt=no_nikah)
+    pdf.cell(80,h=8 ,align="L",border=0,txt=str(no_nikah))
     
     pdf.set_font("arial","",8)
     pdf.set_margins(27, 27)
@@ -23,30 +23,30 @@ async def surat_keterangan_kematian(pdf:FPDF,data:dict):
     
     #get data from database
     data_orang_meninggal = [{
-        "Nama" : data.get("nama_almarhum"),
-        "Tempat, Tanggal Lahir" : data.get("tempat_tanggal_lahir_almarhum"),
-        "Jenis Kelamin" : data.get("jenis_kelamin_almarhum"),
-        "Alamat" : data.get("alamat_lengkap_almarhum"),
-        "Agama" : data.get("agama_almarhum"),
-        "Status Perkawinan": data.get("status_perkawinan_almarhum"),
-        "Pekerjaan" : data.get("pekerjaan_almarhum"),
-        "Kewarganegaraan" : data.get("kewarganegaraan_almarhum"),
-        "nik_almarhum" : data.get("nik_almarhum")
+        "Nama" : data.get("umum").get("nama_lengkap"),
+        "Tempat, Tanggal Lahir" : data.get("umum").get("tempat_lahir") + ", " + data.get("umum").get("tanggal_lahir"),
+        "Jenis Kelamin" : data.get("umum").get("jenis_kelamin"),
+        "Alamat" : data.get("umum").get("alamat"),
+        "Agama" : data.get("umum").get("agama"),
+        "Status Perkawinan": data.get("umum").get("status_perkawinan"),
+        "Pekerjaan" : data.get("umum").get("pekerjaan"),
+        "Kewarganegaraan" : data.get("umum").get("kewarganegaraan"),
+        "NIK" : data.get("umum").get("nik")
         
     }]
     
     waktu = [{
-        "Tanggal": data.get("tanggal_meninggal_almarhum"),
-        "Pukul/Jam": data.get("jam_meninggal_almarhum"),
-        "Bertempat di": data.get("tempat_meninggal_almarhum"),
-        "Penyebab Kematian": data.get("penyebab_kematian_almarhum"),
+        "Tanggal": data.get("kematian").get("tanggal_kematian"),
+        "Pukul/Jam": data.get("kematian").get("jam_kematian"),
+        "Bertempat di": data.get("kematian").get("tempat_kematian"),
+        "Penyebab Kematian": data.get("kematian").get("sebab_kematian"),
     }]
     
     pelapor = [{
-        "Nama": data.get("nama_pelapor_kematian"),
-        "Jenis": data.get("jenis_kelamin_pelapor"),
-        "Alamat": data.get("alamat_lengkap_pelapor"),
-        "Hubungan Dengan Alm/Almh": data.get("hubungan_pelapor_dengan_almarhum"),
+        "Nama": data.get("pelapor").get("nama_lengkap"),
+        "Jenis": data.get("pelapor").get("jenis_kelamin"),
+        "Alamat": data.get("pelapor").get("alamat"),
+        "Hubungan Dengan Alm/Almh": data.get("pelapor").get("hubungan_dengan_yang_meninggal"),
         
     }]
     

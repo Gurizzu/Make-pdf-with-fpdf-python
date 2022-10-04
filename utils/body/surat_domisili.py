@@ -23,13 +23,13 @@ async def surat_domisili(pdf:FPDF,data:dict):
     
     #receive data from database
     data_diri = [{
-        "Nama":data.get('nama_pembuat_surat'),
-        "Jenis Kelamin":data.get("jenis_kelamin_pembuat_surat"),
-        "Tempat, Tanggal Lahir":data.get("tempat_tanggal_lahir_pembuat_surat"),
-        "Agama":data.get("agama_pembuat_surat"),
-        "Pekerjaan":data.get("pekerjaan_pembuat_surat"),
-        "Status Perkawinan":data.get("status_perkawinan_pembuat_surat"),
-        "Alamat" : data.get("alamat_pembuat_surat"),
+        "Nama":data.get('nama'),
+        "Jenis Kelamin":data.get("jenis_kelamin"),
+        "Tempat, Tanggal Lahir": str(data.get("tempat_lahir")) + ", " + str(data.get("tanggal_lahir")),
+        "Agama":data.get("agama"),
+        "Pekerjaan":data.get("pekerjaan"),
+        "Status Perkawinan":data.get("status_perkawinan"),
+        "Alamat" : data.get("dusun"),
     }]
     
     #looping through list of dict
@@ -42,7 +42,7 @@ async def surat_domisili(pdf:FPDF,data:dict):
     
         
     pdf.ln(5)
-    dusun = "Dusun Sukamaju RT 11 RW 001"
+    dusun = data.get("dusun")
     pdf.multi_cell(0,h=4 ,align="L",border=0,txt=f"""Dengan ini menerangkan bahwa benar yang bersangkuta berdomisili di {dusun}, Surat keterangan ini dibuat untuk keperluan bekerja.""",ln=1)
     pdf.ln(3)
     pdf.multi_cell(0,h=4 ,align="L",border=0,txt="""Demikian surat keterangan ini dibuat, atas perhatian dan kerjasamanya kami ucapkan terimakasih.""",ln=1)

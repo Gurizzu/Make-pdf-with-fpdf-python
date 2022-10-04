@@ -8,11 +8,11 @@ async def surat_nikah(pdf:FPDF,data:dict):
     pdf.set_font("arial","BU",10)
     pdf.cell(0,h=8 ,align="C",border=0,txt="SURAT PENGANTAR NIKAH",ln=1)
     
-    no_nikah = data.get("nomor_surat") # Can be replace with no nikah in database 
+    no_nikah = data.get("umum").get("nomor_surat") # Can be replace with no nikah in database 
     pdf.set_font("arial","",10)
     pdf.cell(70,h=8 ,align="R",border=0,txt="Nomor :")
     pdf.set_text_color(255,0,0)
-    pdf.cell(90,h=8 ,align="L",border=0,txt=no_nikah)
+    pdf.cell(90,h=8 ,align="L",border=0,txt=str(no_nikah))
     pdf.set_text_color(0,0,0)
     pdf.ln(10)
     pdf.set_font("arial","",10)
@@ -21,33 +21,33 @@ async def surat_nikah(pdf:FPDF,data:dict):
     
     
     # receive data from database
-    data1 = [{
-        "Nama Lengkap": data.get("nama_mempelai"),
-        "Tempat, Tanggal Lahir" : data.get("tempat_tanggal_lahir_mempelai"),
-        "Jenis Kelamin" : data.get("jenis_kelamin_mempelai"),
-        "Agama": data.get('agama_mempelai'),
-        "Pekerjaan" : data.get("pekerjaan_mempelai"),
-        "Status" : data.get("status_mempelai"),
-        "Dusun" : data.get("dusun_mempelai"),
+    mempelai = [{
+        "Nama Lengkap": data.get("calon_suami_istri").get("nama_calon_istri"),
+        "Tempat, Tanggal Lahir" : str(data.get("calon_suami_istri").get("tempat_lahir")) + ", " + str(data.get("calon_suami_istri").get("tanggal_lahir")),
+        "Jenis Kelamin" : data.get("umum").get("jenis_kelamin"),
+        "Agama": data.get('calon_suami_istri').get("agama"),
+        "Pekerjaan" : data.get("calon_suami_istri").get("pekerjaan"),
+        "Status" : data.get("umum").get("status_perkawinan"),
+        "Dusun" : data.get("umum").get("dusun"),
         
     }]
-    data2 = [{
-        "Nama Lengkap": data.get("nama_ayah_mempelai"),
-        "Tempat, Tanggal Lahir" : data.get("tempat_tanggal_lahir_ayah_mempelai"),
-        "Agama": data.get("agama_ayah_mempelai"),
-        "Pekerjaan" : data.get("pekerjaan_ayah_mempelai"),
-        "Alamat" : data.get("alamat_ayah_mempelai"),
+    ayah = [{
+        "Nama Lengkap": data.get("ayah").get("nama_lengkap"),
+        "Tempat, Tanggal Lahir" : str(data.get("ayah").get("tempat_lahir")) + ", " + str(data.get("ayah").get("tanggal_lahir")),
+        "Agama": data.get("ayah").get("agama"),
+        "Pekerjaan" : data.get("ayah").get("pekerjaan"),
+        "Alamat" : data.get("ayah").get("alamat"),
     }]
-    data3 = [{
-        "Nama Lengkap": data.get("nama_ibu_mempelai"),
-        "Tempat, Tanggal Lahir" : data.get("tempat_tanggal_lahir_ibu_mempelai"),
-        "Agama": data.get("agama_ibu_mempelai"),
-        "Pekerjaan" : data.get("pekerjaan_ibu_mempelai"),
-        "Alamat" : data.get("alamat_ibu_mempelai"),
+    ibu = [{
+        "Nama Lengkap": data.get("ibu").get("nama_lengkap"),
+        "Tempat, Tanggal Lahir" : str(data.get("ibu").get("tempat_lahir")) + ", " + data.get("ibu").get("tanggal_lahir"),
+        "Agama": data.get("ibu").get("agama"),
+        "Pekerjaan" : data.get("ibu").get("pekerjaan"),
+        "Alamat" : data.get("ibu").get("alamat"),
     }]
     
     #looping data from list of dict
-    for da in data1:
+    for da in mempelai:
         for key, val in da.items():
                 if key =='Nama Lengkap':
                     pdf.cell(25,5,border=0,align="R",txt="I.")
@@ -67,7 +67,7 @@ async def surat_nikah(pdf:FPDF,data:dict):
     pdf.cell(50,5,border=0,align="L",txt="AYAH",ln=1)
     
     #looping data ayah
-    for da3 in data2:
+    for da3 in ayah:
         for key, val in da3.items():
                 pdf.cell(25,5,border=0,align="R",txt="")
                 pdf.cell(5,5,border=0)
@@ -81,7 +81,7 @@ async def surat_nikah(pdf:FPDF,data:dict):
     pdf.cell(50,5,border=0,align="L",txt="IBU",ln=1)
     
     #looping data ibu
-    for da3 in data3:
+    for da3 in ibu:
         for key, val in da3.items():
                 pdf.cell(25,5,border=0,align="R",txt="")
                 pdf.cell(5,5,border=0)
@@ -95,4 +95,4 @@ async def surat_nikah(pdf:FPDF,data:dict):
 
     pdf.ln(3)
     pdf.multi_cell(0,h=4 ,align="L",border=0,txt="""\t\t\t\t\t\t\t\t\tDemikian surat keterangan ini dibuat dengan sebenarnya dan diberikan untuk dapat 
-    dipergunakan sebagaimana mestinya.""",ln=1)   
+    dipergunakan sebagaimana mestinya.""",ln=1)
