@@ -23,20 +23,24 @@ async def all_surat(form:str, id:str):
     id = data.get('_id')
     data["_id"] = str(id)
     
+    nama_pembuat = data.get("nama_pembuat")
+    tanggal = data.get("tanggal_print")
+    nama_surat = data.get("nama_surat")
+    
     
     payload = data
     
     save_download_path = f"download/{form}/"
     file_name = payload.get("_id")
     saved_file_name = save_download_path + "pdf_" + file_name
+    response_name = f"{nama_surat}_{nama_pembuat}_{tanggal}"
     footer_surat = {
         "penanda_tangan_surat" : payload.get("penanda_tangan_surat"),
         "nip_penandatangan_surat" : payload.get("nip_penandatangan_surat")
     }
     
-    print(payload)
 
     await func.run_surat(data=payload, foot=footer_surat , output=saved_file_name ,pdf=pdf, form=form)
-    # return FileResponse(f"{saved_file_name}.pdf")
+    return FileResponse(path=f"{saved_file_name}.pdf", filename=f"{response_name}.pdf")
     return {"Massage" : "Susses"}
     
