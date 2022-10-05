@@ -1,7 +1,7 @@
 from fpdf import FPDF
 import datetime
 
-def surat_belum_nikah(pdf:FPDF,data:dict):
+async def surat_belum_nikah(pdf:FPDF,data:dict):
 
     pdf.set_margins(25, 25)
     pdf.ln(5)
