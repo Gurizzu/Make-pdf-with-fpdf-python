@@ -1,4 +1,6 @@
 from fpdf import FPDF
+
+from .body.surat_keterangan_penghasilan_orang_tua import surat_keterangan_penghasilan_orang_tua
 from .body.surat_domisili import surat_domisili
 from .body.surat_nikah import surat_nikah
 from .body.surat_kematian import surat_keterangan_kematian
@@ -47,6 +49,10 @@ async def run_surat(pdf:FPDF,foot:dict,data:dict,output:str,form:str):
     # Surat Keterangan Tidak mampu
     elif form == "surat_keterangan_tidak_mampu":
         await surat_keterangan_tidak_mampu(pdf=pdf, data=data)
+        
+    # Surat Keterangan penghasilan orang tua
+    elif form == "surat_keterangan_penghasilan_orang_tua":
+        await surat_keterangan_penghasilan_orang_tua(pdf=pdf, data=data)
         
     await footer2(pdf=pdf, data=foot)
     pdf.output(f"{output}.pdf")

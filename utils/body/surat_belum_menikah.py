@@ -30,7 +30,7 @@ async def surat_belum_nikah(pdf:FPDF,data:dict):
         "Agama":"" if not data.get("agama") else data.get("agama"),
         "Pekerjaan":"" if not data.get("pekerjaan") else data.get("pekerjaan"),
         "Status Pernikahan":"" if not data.get("status_perkawinan") else data.get("status_perkawinan"),
-        "Alamat Asal":"" if not data.get("alamat_asal") else data.get("alamat_asal"),
+        "Alamat Asal":"" if not data.get("alamat") else data.get("alamat"),
     }]
     
     
