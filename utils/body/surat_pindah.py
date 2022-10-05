@@ -21,8 +21,12 @@ async def surat_pindah(pdf:FPDF,data:dict):
     
     tempat_tanggal_lahir = data.get("umum").get("tempat_lahir") + ", " + data.get("umum").get("tanggal_lahir")
     pengikut = data.get("pengikut")
-    len_pengikut = str(len(pengikut)) + " ORANG"
     
+    if type(pengikut) == list:
+        len_pengikut = str(len(pengikut)) + " ORANG"
+    elif type(pengikut) == dict:
+        len_pengikut = "1 ORANG"
+
     
 
     pindah = [{
@@ -49,16 +53,22 @@ async def surat_pindah(pdf:FPDF,data:dict):
             pdf.cell(55,6,border=0,align="L",txt=key)
             pdf.cell(3,6,border=0,align="L", txt=":")
             pdf.multi_cell(93,6,border=0,align="L",txt=str(val),ln=1)
-            
-    pdf.ln(1)
-    pdf.cell(10,6,border=1,txt="NO",align="C")
-    pdf.cell(55,6,border=1,txt="NIK",align="C")
-    pdf.multi_cell(96,6,border=1,txt="NAMA LENGKAP",ln=1,align="C")
     
-    for nu,i in enumerate(p):
-        pdf.cell(10,6,border=1,txt=str(nu + 1),align="C")
-        pdf.cell(55,6,border=1,txt=str(i.get("nik")),align="C")
-        pdf.multi_cell(96,6,border=1,txt=i.get("nama_lengkap"),ln=1,align="C")
+    if len(pengikut) > 0:         
+        pdf.ln(1)
+        pdf.cell(10,6,border=1,txt="NO",align="C")
+        pdf.cell(55,6,border=1,txt="NIK",align="C")
+        pdf.multi_cell(96,6,border=1,txt="NAMA LENGKAP",ln=1,align="C")
+
+        if type(p) == list:
+            for nu,i in enumerate(p):
+                pdf.cell(10,6,border=1,txt=str(nu + 1),align="C")
+                pdf.cell(55,6,border=1,txt=str(i.get("nik")),align="C")
+                pdf.multi_cell(96,6,border=1,txt=i.get("nama_lengkap"),ln=1,align="C")
+        elif type(p) == dict:
+            pdf.cell(10,6,border=1,txt=str(1),align="C")
+            pdf.cell(55,6,border=1,txt=str(p.get("nik")),align="C")
+            pdf.multi_cell(96,6,border=1,txt=p.get("nama_lengkap"),ln=1,align="C")
     
     pdf.ln(4)
     pdf.set_font("arial","",11)
