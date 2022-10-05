@@ -8,11 +8,11 @@ async def surat_pindah(pdf:FPDF,data:dict):
     pdf.set_font("arial","BU",10)
     pdf.cell(0,h=8 ,align="C",border=0,txt="SURAT KETERANGAN PINDAH",ln=1)
 
-    no_nikah = data.get("umum").get("nomor_surat") # Can be replace with no nikah in database 
+    no_surat_pindah = data.get("umum").get("nomor_surat") # Can be replace with no nikah in database 
     pdf.set_font("arial","",10)
     pdf.cell(70,h=8 ,align="R",border=0,txt="Nomor :")
     pdf.set_text_color(255,0,0)
-    pdf.cell(90,h=8 ,align="L",border=0,txt=no_nikah)
+    pdf.cell(90,h=8 ,align="L",border=0,txt=no_surat_pindah)
     pdf.set_text_color(0,0,0)
     pdf.ln(10)
     pdf.set_font("arial","",10)

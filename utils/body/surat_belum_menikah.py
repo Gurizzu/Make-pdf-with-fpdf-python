@@ -1,18 +1,18 @@
 from fpdf import FPDF
 import datetime
 
-def surat_belum_nikah(pdf:FPDF,data:dict):
+async def surat_belum_nikah(pdf:FPDF,data:dict):
 
     pdf.set_margins(25, 25)
     pdf.ln(5)
     pdf.set_font("arial","BU",10)
     pdf.cell(0,h=8 ,align="C",border=0,txt="SURAT PERNYATAAN BELUM MENIKAH",ln=1)
 
-    no_nikah = data.get("nomor_surat") # Can be replace with no nikah in database 
+    no_surat_belum_menikah = data.get("nomor_surat") # Can be replace with no nikah in database 
     pdf.set_font("arial","",10)
     pdf.cell(70,h=8 ,align="R",border=0,txt="Nomor :")
     pdf.set_text_color(255,0,0)
-    pdf.cell(90,h=8 ,align="L",border=0,txt=no_nikah)
+    pdf.cell(90,h=8 ,align="L",border=0,txt=no_surat_belum_menikah)
     pdf.set_text_color(0,0,0)
     pdf.ln(15)
     pdf.set_font("arial","",10)
