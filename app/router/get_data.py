@@ -40,15 +40,11 @@ async def all_surat(form:str, id:str):
     if not footer_surat:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Cant print")
 
-    
-
     footer_surat = {
        "id_tanda_tangan" : footer_surat.get("id_tanda_tangan")[0],
        "createdAt" : footer_surat.get("createdAt"),
        "updatedAt": footer_surat.get("updatedAt")
     }
-
-    print(json.dumps(footer_surat,indent=4))
 
     await func.run_surat(data=payload, foot=footer_surat , output=saved_file_name ,pdf=pdf, form=form)
     return FileResponse(path=f"{saved_file_name}.pdf", filename=f"{response_name}.pdf")

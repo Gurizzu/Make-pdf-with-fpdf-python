@@ -20,7 +20,7 @@ async def surat_keterangan_penghasilan_orang_tua(pdf:FPDF,data:dict):
     pdf.ln(3)
     
     #tempat_tanggal_lahir
-    tempat_tgl_pemohon = data.get("pemohon").get("tempat_lahir") + ", " + data.get("pemohon").get("tanggal_lahir")
+    tempat_tgl_pemohon = str(data.get("pemohon").get("tempat_lahir")) + ", " + str(data.get("pemohon").get("tanggal_lahir"))
     
     data_pemohon = [{
         "Nama":data.get("pemohon").get("nama_lengkap"),
@@ -30,7 +30,7 @@ async def surat_keterangan_penghasilan_orang_tua(pdf:FPDF,data:dict):
         "Alamat Asal":data.get("pemohon").get("alamat"),
     }]
     
-    tempat_tgl_ortu = data.get("ayah").get("tempat_lahir") + ", " + data.get("ayah").get("tanggal_lahir")
+    tempat_tgl_ortu = str(data.get("ayah").get("tempat_lahir")) + ", " + str(data.get("ayah").get("tanggal_lahir"))
     
     data_orang_tua = [{
         "Nama":data.get("ayah").get("nama_lengkap"),
@@ -46,7 +46,7 @@ async def surat_keterangan_penghasilan_orang_tua(pdf:FPDF,data:dict):
             pdf.cell(10,7,border=0)
             pdf.cell(60,7,border=0,txt=key)
             pdf.cell(3,7,border=0,txt=":")
-            pdf.cell(87,7,border=0,txt=val,ln=1)
+            pdf.cell(87,7,border=0,txt=str(val),ln=1)
             
     pdf.cell(0,7,border=0,txt="Adalah Orang Tua / Wali dari:",align="L",ln=1)
     
@@ -55,9 +55,9 @@ async def surat_keterangan_penghasilan_orang_tua(pdf:FPDF,data:dict):
             pdf.cell(10,7,border=0)
             pdf.cell(60,7,border=0,txt=key)
             pdf.cell(3,7,border=0,txt=":")
-            pdf.cell(87,7,border=0,txt=val,ln=1)
+            pdf.cell(87,7,border=0,txt=str(val),ln=1)
     
-    keperluan = data.get("pemohon").get("keperluan")        
+    keperluan = str(data.get("pemohon").get("keperluan"))        
     
     pdf.ln(4)
     pdf.set_font("arial","",10)
