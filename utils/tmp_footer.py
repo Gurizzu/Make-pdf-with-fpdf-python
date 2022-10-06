@@ -3,10 +3,17 @@ import datetime
 
 #template for footer    
 async def footer2(pdf:FPDF,data:dict):
-    timestamp = str(data.get("created_at")) if not str(data.get("updatedAt")) else str(data.get("updatedAt"))
-    your_dt = datetime.datetime.fromtimestamp(int(timestamp)/1000)  # using the local timezone
-    dt = your_dt.strftime("%Y-%m-%d %H:%M:%S").split()
-    date = dt[0]
+    timestamp = data.get("createdAt") if not data.get("updatedAt") else data.get("updatedAt")
+
+    if timestamp: 
+        your_dt = datetime.datetime.fromtimestamp(int(timestamp)/1000)  # using the local timezone
+        dt = your_dt.strftime("%Y-%m-%d %H:%M:%S").split()
+        date = dt[0]
+    else:
+        date = str(datetime.datetime.utcnow()).split()[0]
+
+    data = data.get("id_tanda_tangan")
+
     pdf.set_font("arial","",10)
     pdf.ln(2)
     pdf.set_x(125)
