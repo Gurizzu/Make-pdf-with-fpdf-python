@@ -11,6 +11,7 @@ from .body.surat_keterangan_kehilangan import surat_keterangan_kehilangan
 from .body.surat_keterangan_tidak_mampu import surat_keterangan_tidak_mampu
 from .body.surat_keterangan_pernah_nikah import surat_keterangan_pernah_nikah
 from .body.surat_keterangan_kelakuan_baik import surat_keterangan_kelakuan_baik
+from .body.surat_keterangan_duda_atau_janda import surat_keterangan_duda_atau_janda
 from .tmp_footer import footer2
 from .tmp_header import header
 
@@ -63,6 +64,10 @@ async def run_surat(pdf:FPDF,foot:dict,data:dict,output:str,form:str):
     # surat_keterangan_kelakuan_baik
     elif form == "surat_keterangan_kelakuan_baik":
         await surat_keterangan_kelakuan_baik(pdf=pdf, data=data)
+        
+    elif form == "surat_keterangan_duda_atau_janda":
+        await surat_keterangan_duda_atau_janda(pdf=pdf, data=data)
+        
         
     await footer2(pdf=pdf, data=foot)
     pdf.output(f"{output}.pdf")
