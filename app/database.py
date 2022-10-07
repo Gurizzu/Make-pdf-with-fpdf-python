@@ -17,6 +17,7 @@ surat_keterangan_kehilangan = mydb["surat_kehilangan"]
 surat_keterangan_tidak_mampu = mydb["surat_keterangan_tidak_mampu"]
 surat_keterangan_penghasilan_orang_tua = mydb["surat_keterangan_penghasilan_orang_tua"]
 surat_keterangan_pernah_nikah = mydb["surat_keterangan_pernah_nikah"]
+surat_keterangan_kelakuan_baik = mydb["surat_keterangan_kelakuan_baik"]
 
 async def make_domisisli(data:dict):
     surat_keterangan_domisili.insert_one(data)
@@ -139,6 +140,15 @@ async def find_one(form:str,id:str):
         data_surat_keterangan_pernah_nikah["tanggal_print"] = datetime.today().strftime('%m%d%Y')
         return data_surat_keterangan_pernah_nikah
     
+    elif form == "surat_keterangan_kelakuan_baik":
+        _id = id
+        data_surat_keterangan_kelakuan_baik = surat_keterangan_kelakuan_baik.find_one({"_id": _id})
+        if not data_surat_keterangan_kelakuan_baik:
+            return False
+        data_surat_keterangan_kelakuan_baik['nama_pembuat'] = data_surat_keterangan_kelakuan_baik.get("nama_lengkap")
+        data_surat_keterangan_kelakuan_baik['nama_surat'] = form.replace("_","-")
+        data_surat_keterangan_kelakuan_baik["tanggal_print"] = datetime.today().strftime('%m%d%Y')
+        return data_surat_keterangan_kelakuan_baik
     else:
         return False
 
