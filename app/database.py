@@ -16,6 +16,7 @@ pengaturan_footer_surat = mydb["v_pengaturan_surat"]
 surat_keterangan_kehilangan = mydb["surat_kehilangan"]
 surat_keterangan_tidak_mampu = mydb["surat_keterangan_tidak_mampu"]
 surat_keterangan_penghasilan_orang_tua = mydb["surat_keterangan_penghasilan_orang_tua"]
+surat_keterangan_pernah_nikah = mydb["surat_keterangan_pernah_nikah"]
 
 async def make_domisisli(data:dict):
     surat_keterangan_domisili.insert_one(data)
@@ -127,6 +128,17 @@ async def find_one(form:str,id:str):
         data_surat_keterangan_penghasilan_orang_tua['nama_surat'] = form.replace("_","-")
         data_surat_keterangan_penghasilan_orang_tua["tanggal_print"] = datetime.today().strftime('%m%d%Y')
         return data_surat_keterangan_penghasilan_orang_tua
+    
+    elif form == "surat_keterangan_pernah_nikah":
+        _id = id
+        data_surat_keterangan_pernah_nikah = surat_keterangan_pernah_nikah.find_one({"_id": _id})
+        if not data_surat_keterangan_pernah_nikah:
+            return False
+        data_surat_keterangan_pernah_nikah['nama_pembuat'] = data_surat_keterangan_pernah_nikah.get("umum").get("nama") if not data_surat_keterangan_pernah_nikah.get("umum").get("nama_lengkap") else data_surat_keterangan_pernah_nikah.get("umum").get("nama_lengkap")
+        data_surat_keterangan_pernah_nikah['nama_surat'] = form.replace("_","-")
+        data_surat_keterangan_pernah_nikah["tanggal_print"] = datetime.today().strftime('%m%d%Y')
+        return data_surat_keterangan_pernah_nikah
+    
     else:
         return False
 

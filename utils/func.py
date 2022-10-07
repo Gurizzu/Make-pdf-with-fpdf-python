@@ -9,6 +9,7 @@ from .body.surat_belum_menikah import surat_belum_nikah
 from .body.surat_pindah import surat_pindah
 from .body.surat_keterangan_kehilangan import surat_keterangan_kehilangan
 from .body.surat_keterangan_tidak_mampu import surat_keterangan_tidak_mampu
+from .body.surat_keterangan_pernah_nikah import surat_keterangan_pernah_nikah
 from .tmp_footer import footer2
 from .tmp_header import header
 
@@ -53,6 +54,10 @@ async def run_surat(pdf:FPDF,foot:dict,data:dict,output:str,form:str):
     # Surat Keterangan penghasilan orang tua
     elif form == "surat_keterangan_penghasilan_orang_tua":
         await surat_keterangan_penghasilan_orang_tua(pdf=pdf, data=data)
+        
+    # Surat Keterangan pernah nikah
+    elif form == "surat_keterangan_pernah_nikah":
+        await surat_keterangan_pernah_nikah(pdf=pdf, data=data)
         
     await footer2(pdf=pdf, data=foot)
     pdf.output(f"{output}.pdf")
