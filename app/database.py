@@ -50,9 +50,9 @@ async def find_one(form:str,id:str):
     
     elif form == "surat_keterangan_kematian":
         _id = id
+        data_kematian = surat_keterangan_kematian.find_one({"_id": _id})
         if not data_kematian:
             return False
-        data_kematian =  surat_keterangan_kematian.find_one({"_id": _id})
         data_kematian['nama_pembuat'] = data_kematian.get("umum").get("nama_lengkap")
         data_kematian['nama_surat'] = form.replace("_","-")
         data_kematian["tanggal_print"] = datetime.today().strftime('%m%d%Y')
