@@ -2,8 +2,7 @@ from fpdf import FPDF
 
 async def buku_keputusan_kepala_desa(pdf:FPDF, data:dict):
     pdf.add_page()
-    pdf.set_fill_color(209, 207, 207)
-    pdf.set_fill_color(246,246,246)
+    pdf.set_fill_color(224, 222, 222)
     pdf.set_font('times',"B", size=12)
     pdf.cell(0,8,border=0,txt="A.2 BUKU KEPUTUSAN KEPALA DESA",align="C",ln=1)
     pdf.cell(0,8,border=0,txt="DESA CIKONENG KABUPATEN BANDUNG BARAT",align="C",ln=1)
