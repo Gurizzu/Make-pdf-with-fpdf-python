@@ -19,6 +19,7 @@ surat_keterangan_penghasilan_orang_tua = mydb["surat_keterangan_penghasilan_oran
 surat_keterangan_pernah_nikah = mydb["surat_keterangan_pernah_nikah"]
 surat_keterangan_kelakuan_baik = mydb["surat_keterangan_kelakuan_baik"]
 surat_keterangan_duda_atau_janda = mydb["surat_keterangan_duda_atau_janda"]
+buku_keputusan_kepala_desa = mydb["buku_keputusan_kepala_desa"]
 
 async def make_domisisli(data:dict):
     surat_keterangan_domisili.insert_one(data)
@@ -160,9 +161,17 @@ async def find_one(form:str,id:str):
         data_surat_keterangan_duda_atau_janda['nama_surat'] = form.replace("_","-")
         data_surat_keterangan_duda_atau_janda["tanggal_print"] = datetime.today().strftime('%m%d%Y')
         return data_surat_keterangan_duda_atau_janda
+
     else:
         return False
 
+async def find_buku(form:str):
+    if form == "buku_keputusan_kepala_desa":
+        data_buku_keputusan_kepala_desa = buku_keputusan_kepala_desa.find()
+        return await fetch_all_buku(data_buku_keputusan_kepala_desa)
+    else:
+        return False
+    
 async def get_footer_by_form(form:str) -> dict:
     query = {"form" : form}
     
@@ -172,7 +181,13 @@ async def get_footer_by_form(form:str) -> dict:
 
     return footer
     
-        
+
+async def fetch_all_buku(Cursor):
+    data = []
+    for i in Cursor:
+        data.append(i)
+
+    return data
     
 # data = {"Menjadi" : "menjadi"}
 
