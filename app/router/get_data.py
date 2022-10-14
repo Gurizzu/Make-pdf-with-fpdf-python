@@ -15,17 +15,16 @@ router = APIRouter(
 @router.get("/v2/generate/{form}")
 async def all_buku(form:str):
     form = form.lower()
-    pdf = FPDF(orientation="landscape", format="A3")
-    data = await database.find_buku(form)
+    data_buku = await database.find_buku(form)
 
-    if not data:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-
-    response_name = form
+    if not data_buku:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
+    
     save_download_path = f"download/{form}/"
-    saved_file_name = save_download_path + response_name
-    await func.run_buku(data=data, output=saved_file_name ,pdf=pdf, form=form)
-    return FileResponse(path=f"{saved_file_name}.pdf", filename=f"{response_name}.pdf")
+    saved_file_name = save_download_path + form
+    await func.run_buku(data=data_buku, form=form)
+    return FileResponse(path=f"{saved_file_name}.xlsx", filename=f"{form}.xlsx")
+
 
 @router.get("/v1/generate/{form}/{id}")
 async def all_surat(form:str, id:str):

@@ -19,8 +19,7 @@ surat_keterangan_penghasilan_orang_tua = mydb["surat_keterangan_penghasilan_oran
 surat_keterangan_pernah_nikah = mydb["surat_keterangan_pernah_nikah"]
 surat_keterangan_kelakuan_baik = mydb["surat_keterangan_kelakuan_baik"]
 surat_keterangan_duda_atau_janda = mydb["surat_keterangan_duda_atau_janda"]
-buku_keputusan_kepala_desa = mydb["buku_keputusan_kepala_desa"]
-buku_aparat_pemerintah_desa = mydb["buku_aparat_pemerintah_desa"]
+buku_peraturan_di_desa = mydb["buku_peraturan_di_desa"]
 
 async def make_domisisli(data:dict):
     surat_keterangan_domisili.insert_one(data)
@@ -165,17 +164,6 @@ async def find_one(form:str,id:str):
 
     else:
         return False
-
-async def find_buku(form:str):
-    if form == "buku_keputusan_kepala_desa":
-        data_buku_keputusan_kepala_desa = buku_keputusan_kepala_desa.find()
-        return await fetch_all_buku(data_buku_keputusan_kepala_desa)
-        
-    elif form == "buku_aparat_pemerintah_desa":
-        data_buku_aparat_pemerintahan_desa = buku_aparat_pemerintah_desa.find()
-        return await fetch_all_buku(data_buku_aparat_pemerintahan_desa)
-    else:
-        return False
     
 async def get_footer_by_form(form:str) -> dict:
     query = {"form" : form}
@@ -187,6 +175,13 @@ async def get_footer_by_form(form:str) -> dict:
     return footer
     
 
+async def find_buku(form:str):
+    if form == "buku_peraturan_di_desa":
+        data_buku_peraturan_di_desa = buku_peraturan_di_desa.find()
+        return await fetch_all_buku(data_buku_peraturan_di_desa)
+    else:
+        return False
+        
 async def fetch_all_buku(Cursor):
     data = []
     for i in Cursor:

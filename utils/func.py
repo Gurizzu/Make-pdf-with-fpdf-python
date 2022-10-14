@@ -12,8 +12,7 @@ from .body.surat_keterangan_tidak_mampu import surat_keterangan_tidak_mampu
 from .body.surat_keterangan_pernah_nikah import surat_keterangan_pernah_nikah
 from .body.surat_keterangan_kelakuan_baik import surat_keterangan_kelakuan_baik
 from .body.surat_keterangan_duda_atau_janda import surat_keterangan_duda_atau_janda
-from .body.buku_keputusan_kepala_desa import buku_keputusan_kepala_desa
-from .body.buku_aparat_pemerintahan_desa import buku_aparat_pemerintah_desa
+from .buku.buku_peraturan_di_desa import buku_peraturan_di_desa
 from .tmp_footer import footer2
 from .tmp_header import header
 
@@ -73,15 +72,7 @@ async def run_surat(pdf:FPDF,foot:dict,data:dict,output:str,form:str):
     await footer2(pdf=pdf, data=foot)
     pdf.output(f"{output}.pdf")
     
-
-async def run_buku(pdf:FPDF,data:dict,form:str,output:str):
-
-    if form == "buku_keputusan_kepala_desa":
-        await buku_keputusan_kepala_desa(pdf=pdf, data=data)
-
-    elif form == "buku_aparat_pemerintah_desa":
-        await buku_aparat_pemerintah_desa(pdf=pdf, data=data)
-
-    pdf.output(f"{output}.pdf")
+async def run_buku(form:str,data:dict):
+    if form == "buku_peraturan_di_desa":
+        await buku_peraturan_di_desa(data=data)
     
-
