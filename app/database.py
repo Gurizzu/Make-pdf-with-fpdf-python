@@ -24,6 +24,7 @@ buku_lembaran_desa_dan_berita_desa = mydb["buku_lembaran_desa_dan_berita_desa"]
 buku_inventaris_kekayaan_desa = mydb["buku_inventaris_kekayaan_desa"]
 buku_agenda = mydb["buku_agenda"]
 buku_ekspedisi = mydb["buku_ekspedisi"]
+buku_keputusan_kepala_desa = mydb["buku_keputusan_kepala_desa"]
 
 async def make_domisisli(data:dict):
     surat_keterangan_domisili.insert_one(data)
@@ -195,6 +196,9 @@ async def find_buku(form:str):
     elif form == "buku_ekspedisi":
         data_buku_ekspedisi = buku_ekspedisi.find()
         return await fetch_all_buku(data_buku_ekspedisi)
+    elif form == "buku_keputusan_kepala_desa":
+        data_buku_keputusan_kepala_desa = buku_keputusan_kepala_desa.find()
+        return await fetch_all_buku(data_buku_keputusan_kepala_desa)
     else:
         return False
     
