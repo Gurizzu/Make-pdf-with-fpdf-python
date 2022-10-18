@@ -1,6 +1,13 @@
 import pymongo
 from bson.objectid import ObjectId
 from datetime import datetime
+from utils.buku import *
+from utils.buku.buku_agenda import buku_agenda
+from utils.buku.buku_ekspedisi import buku_ekspedisi
+from utils.buku.buku_inventaris_kekayaan_desa import buku_inventaris_kekayaan_desa
+from utils.buku.buku_keputusan_kepala_desa import buku_keputusan_kepala_desa
+from utils.buku.buku_lembaran_desa_dan_berita_desa import buku_lembaran_desa_dan_berita_desa
+from utils.buku.buku_peraturan_di_desa import buku_peraturan_di_desa
 
 myclient = pymongo.MongoClient("mongodb://userdesa:desa123@192.168.247.22:27017/?authSource=dev-sidesa&directConnection=true")
 
@@ -19,12 +26,12 @@ surat_keterangan_penghasilan_orang_tua = mydb["surat_keterangan_penghasilan_oran
 surat_keterangan_pernah_nikah = mydb["surat_keterangan_pernah_nikah"]
 surat_keterangan_kelakuan_baik = mydb["surat_keterangan_kelakuan_baik"]
 surat_keterangan_duda_atau_janda = mydb["surat_keterangan_duda_atau_janda"]
-buku_peraturan_di_desa = mydb["buku_peraturan_di_desa"]
-buku_lembaran_desa_dan_berita_desa = mydb["buku_lembaran_desa_dan_berita_desa"]
-buku_inventaris_kekayaan_desa = mydb["buku_inventaris_kekayaan_desa"]
-buku_agenda = mydb["buku_agenda"]
-buku_ekspedisi = mydb["buku_ekspedisi"]
-buku_keputusan_kepala_desa = mydb["buku_keputusan_kepala_desa"]
+col_buku_peraturan_di_desa = mydb["buku_peraturan_di_desa"]
+col_buku_lembaran_desa_dan_berita_desa = mydb["buku_lembaran_desa_dan_berita_desa"]
+col_buku_inventaris_kekayaan_desa = mydb["buku_inventaris_kekayaan_desa"]
+col_buku_agenda = mydb["buku_agenda"]
+col_buku_ekspedisi = mydb["buku_ekspedisi"]
+col_buku_keputusan_kepala_desa = mydb["buku_keputusan_kepala_desa"]
 
 async def make_domisisli(data:dict):
     surat_keterangan_domisili.insert_one(data)
@@ -182,33 +189,45 @@ async def get_footer_by_form(form:str) -> dict:
 
 async def find_buku(form:str):
     if form == "buku_peraturan_di_desa":
-        data_buku_peraturan_di_desa = buku_peraturan_di_desa.find()
-        return await fetch_all_buku(data_buku_peraturan_di_desa)
+        cursor = col_buku_peraturan_di_desa.find()
+        if not cursor:
+            return False
+        await buku_peraturan_di_desa(data=cursor)
+        return True
     elif form == "buku_lembaran_desa_dan_berita_desa":
-        data_buku_lembaran_desa_dan_berita_desa = buku_lembaran_desa_dan_berita_desa.find()
-        return await fetch_all_buku(data_buku_lembaran_desa_dan_berita_desa)
+        cursor = col_buku_lembaran_desa_dan_berita_desa.find()
+        if not cursor:
+            return False
+        await buku_lembaran_desa_dan_berita_desa(data=cursor)
+        return True
+
     elif form == "buku_inventaris_kekayaan_desa":
-        data_buku_inventaris_kekayaan_desa = buku_inventaris_kekayaan_desa.find()
-        return await fetch_all_buku(data_buku_inventaris_kekayaan_desa)
+        cursor = col_buku_inventaris_kekayaan_desa.find()
+        if not cursor:
+            return False
+        await buku_inventaris_kekayaan_desa(data=cursor)
+        return True
     elif form == "buku_agenda":
-        data_buku_agenda = buku_agenda.find()
-        return await fetch_all_buku(data_buku_agenda)
+        cursor = col_buku_agenda.find()
+        if not cursor:
+            return False
+        await buku_agenda(data=cursor)
+        return True
     elif form == "buku_ekspedisi":
-        data_buku_ekspedisi = buku_ekspedisi.find()
-        return await fetch_all_buku(data_buku_ekspedisi)
+        cursor = col_buku_ekspedisi.find()
+        if not cursor:
+            return False
+        await buku_ekspedisi(data=cursor)
+        return True
     elif form == "buku_keputusan_kepala_desa":
-        data_buku_keputusan_kepala_desa = buku_keputusan_kepala_desa.find()
-        return await fetch_all_buku(data_buku_keputusan_kepala_desa)
+        cursor = col_buku_keputusan_kepala_desa.find()
+        if not cursor:
+            return False
+        await buku_keputusan_kepala_desa(data=cursor)
+        return True
     else:
         return False
     
-        
-async def fetch_all_buku(Cursor):
-    data = []
-    for i in Cursor:
-        data.append(i)
-
-    return data
     
 # data = {"Menjadi" : "menjadi"}
 

@@ -14,7 +14,7 @@ async def buku_keputusan_kepala_desa(data:dict):
 
         bulks.append(data2)
 
-    workbook = Workbook("download/buku_keputusan_kepala_desa/buku_keputusan_kepala_desa.xlsx")
+    workbook = Workbook("download/buku/buku_keputusan_kepala_desa.xlsx")
     worksheet = workbook.add_worksheet("A.2")
 
 

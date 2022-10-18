@@ -20,7 +20,7 @@ async def buku_peraturan_di_desa(data:dict):
 
         bulks.append(data2)
 
-    workbook = Workbook("download/buku_peraturan_di_desa/buku_peraturan_di_desa.xlsx")
+    workbook = Workbook("download/buku/buku_peraturan_di_desa.xlsx")
     worksheet = workbook.add_worksheet("A.1")
 
 

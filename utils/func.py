@@ -1,13 +1,5 @@
 from fpdf import FPDF
 
-from .buku.buku_agenda import buku_agenda
-from .buku.buku_ekspedisi import buku_ekspedisi
-
-from .buku.buku_lembaran_desa_dan_berita_desa import buku_lembaran_desa_dan_berita_desa
-from .buku.buku_inventaris_kekayaan_desa import buku_inventaris_kekayaan_desa
-
-from .buku.buku_keputusan_kepala_desa import buku_keputusan_kepala_desa
-
 from .body.surat_keterangan_penghasilan_orang_tua import surat_keterangan_penghasilan_orang_tua
 from .body.surat_domisili import surat_domisili
 from .body.surat_nikah import surat_nikah
@@ -80,21 +72,3 @@ async def run_surat(pdf:FPDF,foot:dict,data:dict,output:str,form:str):
     await footer2(pdf=pdf, data=foot)
     pdf.output(f"{output}.pdf")
     
-async def run_buku(form:str,data:dict):
-    if form == "buku_peraturan_di_desa":
-        await buku_peraturan_di_desa(data=data)
-        
-    elif form == "buku_lembaran_desa_dan_berita_desa":
-        await buku_lembaran_desa_dan_berita_desa(data=data)
-        
-    elif form == "buku_inventaris_kekayaan_desa":
-        await buku_inventaris_kekayaan_desa(data=data)
-        
-    elif form == "buku_agenda":
-        await buku_agenda(data=data)
-        
-    elif form == "buku_ekspedisi":
-        await buku_ekspedisi(data=data)
-    
-    elif form == "buku_keputusan_kepala_desa":
-        await buku_keputusan_kepala_desa(data=data)

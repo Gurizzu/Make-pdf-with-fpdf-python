@@ -2,7 +2,7 @@ from xlsxwriter import Workbook
 
 
 async def buku_ekspedisi(data:dict):
-    workbook = Workbook("download/buku_ekspedisi/buku_ekspedisi.xlsx")
+    workbook = Workbook("download/buku/buku_ekspedisi.xlsx")
     worksheet = workbook.add_worksheet("A.8")
 
 

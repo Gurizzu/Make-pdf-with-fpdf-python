@@ -20,10 +20,8 @@ async def all_buku(form:str):
     if not data_buku:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
     
-    save_download_path = f"download/{form}/"
-    saved_file_name = save_download_path + form
-    await func.run_buku(data=data_buku, form=form)
-    return FileResponse(path=f"{saved_file_name}.xlsx", filename=f"{form}.xlsx")
+    save_download_path = f"download/buku/{form}"
+    return FileResponse(path=f"{save_download_path}.xlsx", filename=f"{form}.xlsx")
 
 
 @router.get("/v1/generate/{form}/{id}")

@@ -4,7 +4,7 @@ from xlsxwriter import Workbook
 
 
 async def buku_agenda(data:dict):
-    workbook = Workbook("download/buku_agenda/buku_agenda.xlsx")
+    workbook = Workbook("download/buku/buku_agenda.xlsx")
     worksheet = workbook.add_worksheet("A.7")
 
 
