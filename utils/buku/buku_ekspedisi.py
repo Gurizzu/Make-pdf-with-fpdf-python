@@ -45,7 +45,7 @@ async def buku_ekspedisi(data:dict):
     worksheet.set_column('E:E', 25)
     worksheet.set_column('F:F', 20)
 
-    worksheet.merge_range('A3:G3', 'A.7 BUKU EKSPEDISI',head)
+    worksheet.merge_range('A3:G3', 'A.8 BUKU EKSPEDISI',head)
     worksheet.merge_range('A4:G4', 'DESA CIKONENG KABUPATEN BANDUNG',head)
 
 
