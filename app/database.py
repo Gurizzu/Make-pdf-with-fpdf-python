@@ -1,7 +1,6 @@
 import pymongo
 from bson.objectid import ObjectId
 from datetime import datetime
-from utils.buku import *
 from utils.buku.buku_agenda import buku_agenda
 from utils.buku.buku_ekspedisi import buku_ekspedisi
 from utils.buku.buku_inventaris_kekayaan_desa import buku_inventaris_kekayaan_desa
