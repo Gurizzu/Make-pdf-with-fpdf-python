@@ -1,20 +1,26 @@
 import pymongo
 from bson.objectid import ObjectId
 from datetime import datetime
-from utils.buku import *
 from utils.buku.buku_agenda import buku_agenda
 from utils.buku.buku_bank_desa import buku_bank_desa
 from utils.buku.buku_ekspedisi import buku_ekspedisi
+from utils.buku.buku_induk_penduduk import buku_induk_penduduk
+from utils.buku.buku_inventaris_hasil_hasil_pembangunan import buku_inventaris_hasil_hasil_pembangunan
 from utils.buku.buku_inventaris_kekayaan_desa import buku_inventaris_kekayaan_desa
+from utils.buku.buku_kader_pemberdayaan_masyarakat import buku_kader_pemberdayaan_masyarakat
 from utils.buku.buku_kas_pembantu import buku_kas_pembantu
 from utils.buku.buku_kas_pembantu_kegiatan import buku_kas_pembantu_kegiatan
 from utils.buku.buku_kas_umum import buku_kas_umum
+from utils.buku.buku_kegiatan_pembangunan import buku_kegiatan_pembangunan
 from utils.buku.buku_keputusan_kepala_desa import buku_keputusan_kepala_desa
 from utils.buku.buku_lembaran_desa_dan_berita_desa import buku_lembaran_desa_dan_berita_desa
-from utils.buku.buku_mutasi_penduduk import buku_mutasi_penduduk
+from utils.buku.buku_penduduk_sementara import buku_penduduk_sementara
 from utils.buku.buku_peraturan_di_desa import buku_peraturan_di_desa
 from utils.buku.buku_aparat_pemerintah_desa import buku_aparat_pemerintah_desa
+from utils.buku.buku_rencana_kerja_pembangunan import buku_rencana_kerja_pembangunan
 from utils.buku.buku_tanah_di_desa import buku_tanah_di_desa
+from utils.buku.buku_tanah_kas_desa import buku_tanah_kas_desa
+from utils.buku.buku_mutasi_penduduk import buku_mutasi_penduduk
 
 
 myclient = pymongo.MongoClient("mongodb://userdesa:desa123@192.168.247.22:27017/?authSource=dev-sidesa&directConnection=true")
@@ -46,6 +52,13 @@ col_buku_kas_pembantu_kegiatan = mydb["buku_kas_pembantu_kegiatan"]
 col_buku_kas_umum = mydb["buku_kas_umum"]
 col_buku_kas_pembantu = mydb["buku_kas_pembantu"]
 col_buku_bank_desa = mydb["buku_bank_desa"]
+col_buku_rencana_kerja_pembangunan = mydb["buku_rencana_kerja_pembangunan"]
+col_buku_kegiatan_pembangunan = mydb["buku_kegiatan_pembangunan"]
+col_buku_inventaris_hasil_hasil_pembangunan = mydb["buku_inventaris_hasil_hasil_pembangunan"]
+col_buku_kader_pemberdayaan_masyarakat = mydb["buku_kader_pemberdayaan_masyarakat"]
+col_buku_tanah_kas_desa = mydb["buku_tanah_kas_desa"]
+col_buku_induk_penduduk = mydb["buku_induk_penduduk"]
+col_buku_penduduk_sementara = mydb["buku_penduduk_sementara"]
 col_buku_mutasi_penduduk = mydb["buku_mutasi_penduduk"]
 
 async def make_domisisli(data:dict):
@@ -276,15 +289,57 @@ async def find_buku(form:str):
             return False
         await buku_bank_desa(data=cursor)
         return True
+    elif form == "buku_rencana_kerja_pembangunan":
+        cursor = col_buku_rencana_kerja_pembangunan.find()
+        if not cursor:
+            return False
+        await buku_rencana_kerja_pembangunan(data=cursor)
+        return True
+    elif form == "buku_kegiatan_pembangunan":
+        cursor = col_buku_kegiatan_pembangunan.find()
+        if not cursor:
+            return False
+        await buku_kegiatan_pembangunan(data=cursor)
+        return True
+    elif form == "buku_inventaris_hasil_hasil_pembangunan":
+        cursor = col_buku_inventaris_hasil_hasil_pembangunan.find()
+        if not cursor:
+            return False
+        await buku_inventaris_hasil_hasil_pembangunan(data=cursor)
+        return True
+    elif form == "buku_kader_pemberdayaan_masyarakat":
+        cursor = col_buku_kader_pemberdayaan_masyarakat.find()
+        if not cursor:
+            return False
+        await buku_kader_pemberdayaan_masyarakat(data=cursor)
+        return True
+    elif form == "buku_tanah_kas_desa":
+        cursor = col_buku_tanah_kas_desa.find()
+        if not cursor:
+            return False
+        await buku_tanah_kas_desa(data=cursor)
+        return True
+    elif form == "buku_induk_penduduk":
+        cursor = col_buku_induk_penduduk.find()
+        if not cursor:
+            return False
+        await buku_induk_penduduk(data=cursor)
+        return True
+    elif form == "buku_penduduk_sementara":
+        cursor = col_buku_penduduk_sementara.find()
+        if not cursor:
+            return False
+        await buku_penduduk_sementara(data=cursor)
+        return True
     elif form == "buku_mutasi_penduduk":
         cursor = col_buku_mutasi_penduduk.find()
         if not cursor:
             return False
         await buku_mutasi_penduduk(data=cursor)
         return True
-
     else:
         return False
+    
     
     
 # data = {"Menjadi" : "menjadi"}
