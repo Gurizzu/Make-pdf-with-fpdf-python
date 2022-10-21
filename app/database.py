@@ -11,6 +11,7 @@ from utils.buku.buku_kas_pembantu_kegiatan import buku_kas_pembantu_kegiatan
 from utils.buku.buku_kas_umum import buku_kas_umum
 from utils.buku.buku_keputusan_kepala_desa import buku_keputusan_kepala_desa
 from utils.buku.buku_lembaran_desa_dan_berita_desa import buku_lembaran_desa_dan_berita_desa
+from utils.buku.buku_mutasi_penduduk import buku_mutasi_penduduk
 from utils.buku.buku_peraturan_di_desa import buku_peraturan_di_desa
 from utils.buku.buku_aparat_pemerintah_desa import buku_aparat_pemerintah_desa
 from utils.buku.buku_tanah_di_desa import buku_tanah_di_desa
@@ -45,6 +46,7 @@ col_buku_kas_pembantu_kegiatan = mydb["buku_kas_pembantu_kegiatan"]
 col_buku_kas_umum = mydb["buku_kas_umum"]
 col_buku_kas_pembantu = mydb["buku_kas_pembantu"]
 col_buku_bank_desa = mydb["buku_bank_desa"]
+col_buku_mutasi_penduduk = mydb["buku_mutasi_penduduk"]
 
 async def make_domisisli(data:dict):
     surat_keterangan_domisili.insert_one(data)
@@ -274,8 +276,13 @@ async def find_buku(form:str):
             return False
         await buku_bank_desa(data=cursor)
         return True
-    
-    
+    elif form == "buku_mutasi_penduduk":
+        cursor = col_buku_mutasi_penduduk.find()
+        if not cursor:
+            return False
+        await buku_mutasi_penduduk(data=cursor)
+        return True
+
     else:
         return False
     
