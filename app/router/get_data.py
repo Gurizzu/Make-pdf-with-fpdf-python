@@ -12,18 +12,6 @@ router = APIRouter(
     tags=["get data"]
 )
 
-@router.get("/v2/generate/{form}")
-async def all_buku(form:str):
-    form = form.lower()
-    data_buku = await database.find_buku(form)
-
-    if not data_buku:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
-    
-    save_download_path = f"download/buku/{form}"
-    return FileResponse(path=f"{save_download_path}.xlsx", filename=f"{form}.xlsx")
-
-
 @router.get("/v1/generate/{form}/{id}")
 async def all_surat(form:str, id:str):
     form = form.lower()
@@ -61,4 +49,30 @@ async def all_surat(form:str, id:str):
     await func.run_surat(data=payload, foot=footer_surat , output=saved_file_name ,pdf=pdf, form=form)
     return FileResponse(path=f"{saved_file_name}.pdf", filename=f"{response_name}.pdf")
     # return {"Massage" : "Susses"}
+    
+    
+@router.get("/v2/generate/{form}")
+async def all_buku(form:str):
+    form = form.lower()
+    data_buku = await database.find_buku(form)
+
+    if not data_buku:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
+    
+    save_download_path = f"download/buku/{form}"
+    return FileResponse(path=f"{save_download_path}.xlsx", filename=f"{form}.xlsx")
+
+
+@router.get("/v3/generate/{form}/{id}")
+async def buku_with_id(form:str,id:str):
+    form = form.lower()
+    data_buku = await database.find_buku_with_id(form,id)
+    print(data_buku)
+    if not data_buku:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
+    
+    save_download_path = f"download/buku/{form}"
+    return FileResponse(path=f"{save_download_path}.xlsx", filename=f"{form}.xlsx")
+
+
     

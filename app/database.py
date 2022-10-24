@@ -21,7 +21,8 @@ from utils.buku.buku_rencana_kerja_pembangunan import buku_rencana_kerja_pembang
 from utils.buku.buku_tanah_di_desa import buku_tanah_di_desa
 from utils.buku.buku_tanah_kas_desa import buku_tanah_kas_desa
 from utils.buku.buku_mutasi_penduduk import buku_mutasi_penduduk
-
+from utils.buku.buku_anggaran_pendapatan_dan_belanja_desa import buku_anggaran_pendapatan_dan_belanja_desa
+from utils.buku.buku_rencana_anggaran_biaya import buku_rencana_anggaran_biaya
 
 myclient = pymongo.MongoClient("mongodb://userdesa:desa123@192.168.247.22:27017/?authSource=dev-sidesa&directConnection=true")
 
@@ -60,6 +61,9 @@ col_buku_tanah_kas_desa = mydb["buku_tanah_kas_desa"]
 col_buku_induk_penduduk = mydb["buku_induk_penduduk"]
 col_buku_penduduk_sementara = mydb["buku_penduduk_sementara"]
 col_buku_mutasi_penduduk = mydb["buku_mutasi_penduduk"]
+col_buku_anggaran_pendapatan_dan_belanja_desa = mydb["buku_anggaran_pendapatan_dan_belanja_desa"]
+col_buku_rencana_anggaran_biaya = mydb["buku_rencana_anggaran_biaya"]
+
 
 async def make_domisisli(data:dict):
     surat_keterangan_domisili.insert_one(data)
@@ -337,11 +341,26 @@ async def find_buku(form:str):
             return False
         await buku_mutasi_penduduk(data=cursor)
         return True
+    elif form == "buku_rencana_anggaran_biaya":
+        cursor = col_buku_rencana_anggaran_biaya.find()
+        if not cursor:
+            return False
+        await buku_rencana_anggaran_biaya(data=cursor)
+        return True
     else:
         return False
     
+async def find_buku_with_id(form:str,id:str):
     
+    if form == "buku_anggaran_pendapatan_dan_belanja_desa":
+        _id = id
+        cursor = col_buku_anggaran_pendapatan_dan_belanja_desa.find_one({"_id": _id})
+        if not cursor:
+            return False
+        await buku_anggaran_pendapatan_dan_belanja_desa(data=cursor)
+        return True
     
+
 # data = {"Menjadi" : "menjadi"}
 
 # domisili.insert_one(data)
