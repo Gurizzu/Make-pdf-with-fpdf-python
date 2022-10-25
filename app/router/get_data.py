@@ -67,7 +67,6 @@ async def all_buku(form:str):
 async def buku_with_id(form:str,id:str):
     form = form.lower()
     data_buku = await database.find_buku_with_id(form,id)
-    print(data_buku)
     if not data_buku:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
     

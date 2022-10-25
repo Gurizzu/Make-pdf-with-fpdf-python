@@ -8,6 +8,7 @@ from utils.buku.buku_induk_penduduk import buku_induk_penduduk
 from utils.buku.buku_inventaris_hasil_hasil_pembangunan import buku_inventaris_hasil_hasil_pembangunan
 from utils.buku.buku_inventaris_kekayaan_desa import buku_inventaris_kekayaan_desa
 from utils.buku.buku_kader_pemberdayaan_masyarakat import buku_kader_pemberdayaan_masyarakat
+from utils.buku.buku_kartu_tanda_penduduk_dan_buku_kartu_keluarga import buku_kartu_tanda_penduduk_dan_buku_kartu_keluarga
 from utils.buku.buku_kas_pembantu import buku_kas_pembantu
 from utils.buku.buku_kas_pembantu_kegiatan import buku_kas_pembantu_kegiatan
 from utils.buku.buku_kas_umum import buku_kas_umum
@@ -17,6 +18,7 @@ from utils.buku.buku_lembaran_desa_dan_berita_desa import buku_lembaran_desa_dan
 from utils.buku.buku_penduduk_sementara import buku_penduduk_sementara
 from utils.buku.buku_peraturan_di_desa import buku_peraturan_di_desa
 from utils.buku.buku_aparat_pemerintah_desa import buku_aparat_pemerintah_desa
+from utils.buku.buku_rekapitulasi_jumlah_penduduk import buku_rekapitulasi_jumlah_penduduk
 from utils.buku.buku_rencana_kerja_pembangunan import buku_rencana_kerja_pembangunan
 from utils.buku.buku_tanah_di_desa import buku_tanah_di_desa
 from utils.buku.buku_tanah_kas_desa import buku_tanah_kas_desa
@@ -63,6 +65,8 @@ col_buku_penduduk_sementara = mydb["buku_penduduk_sementara"]
 col_buku_mutasi_penduduk = mydb["buku_mutasi_penduduk"]
 col_buku_anggaran_pendapatan_dan_belanja_desa = mydb["buku_anggaran_pendapatan_dan_belanja_desa"]
 col_buku_rencana_anggaran_biaya = mydb["buku_rencana_anggaran_biaya"]
+coll_buku_ktp_dan_buku_kk = mydb["v_buku_ktp_dan_buku_kk"]
+coll_buku_rekapitulasi_jumlah_penduduk = mydb["v_buku_rekapitulasi_jumlah_penduduk"]
 
 
 async def make_domisisli(data:dict):
@@ -346,6 +350,30 @@ async def find_buku(form:str):
         if not cursor:
             return False
         await buku_rencana_anggaran_biaya(data=cursor)
+        return True
+    elif form == "buku_kartu_tanda_penduduk_dan_buku_kartu_keluarga":
+        cursor = coll_buku_ktp_dan_buku_kk.find()
+        if not cursor:
+            return False
+        await buku_kartu_tanda_penduduk_dan_buku_kartu_keluarga(data=cursor)
+        return True
+    elif form == "buku_rekapitulasi_jumlah_penduduk":
+        dusun_dusun = coll_buku_rekapitulasi_jumlah_penduduk.distinct("dusun")
+
+        bulks = []
+        for dusun in dusun_dusun:
+            data1 = {}
+            wni_laki = coll_buku_rekapitulasi_jumlah_penduduk.find_one({"kewarganegaraan" : "WNI", "jenisKelamin": "Laki-Laki", "dusun": dusun})
+            wni_perempuan = coll_buku_rekapitulasi_jumlah_penduduk.find_one({"kewarganegaraan" : "WNI", "jenisKelamin": "Perempuan", "dusun": dusun})
+            wna_laki = coll_buku_rekapitulasi_jumlah_penduduk.find_one({"kewarganegaraan" : "WNA", "jenisKelamin": "Laki-Laki", "dusun": dusun})
+            wna_perempuan = coll_buku_rekapitulasi_jumlah_penduduk.find_one({"kewarganegaraan" : "WNA", "jenisKelamin": "Perempuan", "dusun": dusun})
+            data1["wni_laki"] = "0" if not wni_laki else wni_laki.get("total")
+            data1["wni_perempuan"] = "0" if not wni_perempuan else wni_perempuan.get("total")
+            data1["wna_laki"] = "0" if not wna_laki else wna_laki.get("total")
+            data1["wna_perempuan"] = "0" if not wna_perempuan else wna_perempuan.get("total")
+            data1["dusun"] = dusun
+            bulks.append(data1)
+        await buku_rekapitulasi_jumlah_penduduk(data=bulks)
         return True
     else:
         return False
