@@ -1,3 +1,5 @@
+
+from fastapi import HTTPException,status
 import pymongo
 from bson.objectid import ObjectId
 from datetime import datetime
@@ -223,7 +225,7 @@ async def get_footer_by_form(form:str) -> dict:
     return footer
     
 
-async def find_buku(form:str):
+async def find_buku(form:str,filter:str):
     if form == "buku_peraturan_di_desa":
         cursor = col_buku_peraturan_di_desa.find()
         if not cursor:
@@ -328,7 +330,10 @@ async def find_buku(form:str):
         await buku_tanah_kas_desa(data=cursor)
         return True
     elif form == "buku_induk_penduduk":
-        cursor = col_buku_induk_penduduk.find()
+        ls = ["Laki-Laki","Perempuan",""]
+        if filter not in ls:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="input filter Laki-laki, Perempuan, or dont input for all gender")
+        cursor = col_buku_induk_penduduk.find({"umum.jenis_kelamin":{"$regex":filter}})
         if not cursor:
             return False
         await buku_induk_penduduk(data=cursor)

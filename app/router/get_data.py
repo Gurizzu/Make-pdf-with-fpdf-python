@@ -1,4 +1,5 @@
 import json
+from typing import Optional
 from fastapi import APIRouter, HTTPException, status
 from .. import schema , database
 from fpdf import FPDF
@@ -52,9 +53,9 @@ async def all_surat(form:str, id:str):
     
     
 @router.get("/v2/generate/{form}")
-async def all_buku(form:str):
+async def all_buku(form:str,gender_filter : Optional[str] = ''):
     form = form.lower()
-    data_buku = await database.find_buku(form)
+    data_buku = await database.find_buku(form,gender_filter)
 
     if not data_buku:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
