@@ -70,8 +70,9 @@ async def buku_with_id(form:str,id:str):
     if not data_buku:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
     
+
     save_download_path = f"download/buku/{form}"
-    return FileResponse(path=f"{save_download_path}.xlsx", filename=f"{form}.xlsx")
+    return FileResponse(path=f"{save_download_path}.xlsx", filename=f"{form}-{id}.xlsx")
 
 
     
