@@ -225,7 +225,7 @@ async def get_footer_by_form(form:str) -> dict:
     return footer
     
 
-async def find_buku(form:str,filter:str):
+async def find_buku(form:str,filter:dict):
     if form == "buku_peraturan_di_desa":
         cursor = col_buku_peraturan_di_desa.find()
         if not cursor:
@@ -330,10 +330,27 @@ async def find_buku(form:str,filter:str):
         await buku_tanah_kas_desa(data=cursor)
         return True
     elif form == "buku_induk_penduduk":
-        ls = ["Laki-Laki","Perempuan",""]
-        if filter not in ls:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="input filter Laki-laki, Perempuan, or dont input for all gender")
-        cursor = col_buku_induk_penduduk.find({"umum.jenis_kelamin":{"$regex":filter}})
+        status_kawin = filter.get("status_perkawinan")
+        if not status_kawin:
+            status_kawin = {'$regex':filter.get("nama_lengkap")}
+        else:
+            status_kawin:str = filter.get("status_perkawinan")
+            status_kawin = status_kawin.title()
+        cursor = col_buku_induk_penduduk.find({ 'umum.nama_lengkap' : {'$regex':filter.get("nama_lengkap"), "$options" : "i"}, 
+        'nikah_cerai.status_perkawinan' :status_kawin,
+        'kelahiran.tempat_lahir' : {'$regex':filter.get("tempat_lahir"), "$options" : "i"},
+        'umum.jenis_kelamin' : {'$regex':filter.get("jenis_kelamin"), "$options" : "i"},
+        'kelahiran.tanggal_lahir' : {'$regex':filter.get("tanggal_lahir"), "$options" : "i"},
+        'umum.agama' : {'$regex':filter.get("agama"), "$options" : "i"},
+        'umum.pendidikan_terakhir' : {'$regex':filter.get("pendidikan_terakhir"), "$options" : "i"},
+        'umum.pekerjaan' : {'$regex':filter.get("pekerjaan"), "$options" : "i"},
+        'umum.dapat_membaca_huruf' : {'$regex':filter.get("dapat_membaca_huruf"), "$options" : "i"},
+        'umum.kewarganegaraan' : {'$regex':filter.get("kewarganegaraan"), "$options" : "i"},
+        'umum.alamat_rumah' : {'$regex':filter.get("alamat_rumah"), "$options" : "i"},
+        'kelahiran.kedudukan_dalam_keluarga' : {'$regex':filter.get("kedudukan_dalam_keluarga"), "$options" : "i"},
+        'umum.nik' : {'$regex':filter.get("nik"), "$options" : "i"},
+        'kelahiran.nomor_kk' : {'$regex':filter.get("nomor_kk"), "$options" : "i"}
+        }).limit(5)
         if not cursor:
             return False
         await buku_induk_penduduk(data=cursor)

@@ -1,5 +1,4 @@
 import json
-from typing import Optional
 from fastapi import APIRouter, HTTPException, status
 from .. import schema , database
 from fpdf import FPDF
@@ -53,15 +52,35 @@ async def all_surat(form:str, id:str):
     
     
 @router.get("/v2/generate/{form}")
-async def all_buku(form:str,gender_filter : Optional[str] = ''):
+async def all_buku(form:str):
     form = form.lower()
-    data_buku = await database.find_buku(form,gender_filter)
+    data_buku = await database.find_buku(form)
 
     if not data_buku:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
     
     save_download_path = f"download/buku/{form}"
     return FileResponse(path=f"{save_download_path}.xlsx", filename=f"{form}.xlsx")
+
+@router.post("/v2/generate/buku_induk_penduduk")
+async def Filter_buku_induk_peduduk(filter:schema.FilterBukuIndukPenduduk):
+    status_perkawinan_check = ["kawin", "belum kawin"]
+    jenis_kelamin_check = ["laki-laki", "perempuan"]
+    filtered = filter.dict()
+
+    if str(filtered.get("jenis_kelamin")).lower() not in jenis_kelamin_check and str(filtered.get("jenis_kelamin")) != '':
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Insert 'laki-laki' or 'perempuan' in 'jenis_kelamin'")
+
+    if str(filtered.get("status_perkawinan")).lower() not in status_perkawinan_check and str(filtered.get("status_perkawinan")) != '' :
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Insert 'Kawin' or 'tidak kawin' in 'status_kawin'")
+
+    data_buku = await database.find_buku(form="buku_induk_penduduk", filter=filtered)
+
+    if not data_buku:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
+    
+    save_download_path = f"download/buku/buku_induk_penduduk"
+    return FileResponse(path=f"{save_download_path}.xlsx", filename="buku_induk_penduduk.xlsx")
 
 
 @router.get("/v3/generate/{form}/{id}")
@@ -71,9 +90,10 @@ async def buku_with_id(form:str,id:str):
     if not data_buku:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
     
-
     save_download_path = f"download/buku/{form}"
-    return FileResponse(path=f"{save_download_path}.xlsx", filename=f"{form}-{id}.xlsx")
+    return FileResponse(path=f"{save_download_path}.xlsx", filename=f"{form}.xlsx")
+
+
 
 
     

@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class SuratDomisiliForm(BaseModel):
     nomor_surat: str
@@ -124,3 +125,21 @@ class SuratNikahForm(BaseModel):
                 "nip_penandatangan_surat": "1918718001902981920"
             }
         }
+
+class FilterBukuIndukPenduduk(BaseModel):
+    nama_lengkap: Optional[str] = ''
+    status_perkawinan: Optional[str] = ''
+    jenis_kelamin:Optional[str] = ''
+    tempat_lahir:Optional[str] = ''
+    tanggal_lahir:Optional[str] = ''
+    agama:Optional[str]=''
+    pendidikan_terakhir:Optional[str] = ''
+    pekerjaan:Optional[str] = ''
+    dapat_membaca_huruf:Optional[str] = ''
+    kewarganegaraan:Optional[str] = ''
+    alamat_rumah:Optional[str]= ''
+    kedudukan_dalam_keluarga:Optional[str] = ''
+    nik:Optional[str] = ''
+    nomor_kk:Optional[str] = ''
+
+
