@@ -330,27 +330,60 @@ async def find_buku(form:str,filter:dict):
         await buku_tanah_kas_desa(data=cursor)
         return True
     elif form == "buku_induk_penduduk":
-        status_kawin = filter.get("status_perkawinan")
-        if not status_kawin:
-            status_kawin = {'$regex':filter.get("nama_lengkap")}
+
+        # check some field
+        status_perkawinan_check = ["kawin", "belum kawin"]
+        jenis_kelamin_check = ["laki-laki", "perempuan"]
+
+        """
+            Get Data From Body If field in Body is None replace with ''
+        """
+        nama_lengkap = '' if not filter.get("nama_lengkap") else str(filter.get("nama_lengkap"))
+        tempat_lahir = '' if not filter.get("tempat_lahir") else str(filter.get("tempat_lahir"))
+        jenis_kelamin = '' if not filter.get("jenis_kelamin") else str(filter.get("jenis_kelamin"))
+        tanggal_lahir = '' if not filter.get("tanggal_lahir") else str(filter.get("tanggal_lahir"))
+        agama = '' if not filter.get("agama") else str(filter.get("agama"))
+        pendidikan_terakhir = '' if not filter.get("pendidikan_terakhir") else str(filter.get("pendidikan_terakhir"))
+        pekerjaan = '' if not filter.get("pekerjaan") else str(filter.get("pekerjaan"))
+        dapat_membaca_huruf = '' if not filter.get("dapat_membaca_huruf") else str(filter.get("dapat_membaca_huruf"))
+        kewarganegaraan = '' if not filter.get("kewarganegaraan") else str(filter.get("kewarganegaraan"))
+        alamat_rumah = '' if not filter.get("alamat_rumah") else str(filter.get("alamat_rumah"))
+        kedudukan_dalam_keluarga = '' if not filter.get("kedudukan_dalam_keluarga") else str(filter.get("kedudukan_dalam_keluarga"))
+        nik = '' if not filter.get("nik") else str(filter.get("nik"))
+        nomor_kk = '' if not filter.get("nomor_kk") else str(filter.get("nomor_kk"))
+        status_perkawinan = '' if not filter.get("status_perkawinan") else str(filter.get("status_perkawinan"))
+
+        if str(status_perkawinan).lower() not in status_perkawinan_check and str(status_perkawinan) != '':
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Insert 'kawin' or 'belum kawin' in 'status_kawin'")
+
+        if not status_perkawinan:
+            status_perkawinan = {'$regex':status_perkawinan}
         else:
-            status_kawin:str = filter.get("status_perkawinan")
-            status_kawin = status_kawin.title()
-        cursor = col_buku_induk_penduduk.find({ 'umum.nama_lengkap' : {'$regex':filter.get("nama_lengkap"), "$options" : "i"}, 
-        'nikah_cerai.status_perkawinan' :status_kawin,
-        'kelahiran.tempat_lahir' : {'$regex':filter.get("tempat_lahir"), "$options" : "i"},
-        'umum.jenis_kelamin' : {'$regex':filter.get("jenis_kelamin"), "$options" : "i"},
-        'kelahiran.tanggal_lahir' : {'$regex':filter.get("tanggal_lahir"), "$options" : "i"},
-        'umum.agama' : {'$regex':filter.get("agama"), "$options" : "i"},
-        'umum.pendidikan_terakhir' : {'$regex':filter.get("pendidikan_terakhir"), "$options" : "i"},
-        'umum.pekerjaan' : {'$regex':filter.get("pekerjaan"), "$options" : "i"},
-        'umum.dapat_membaca_huruf' : {'$regex':filter.get("dapat_membaca_huruf"), "$options" : "i"},
-        'umum.kewarganegaraan' : {'$regex':filter.get("kewarganegaraan"), "$options" : "i"},
-        'umum.alamat_rumah' : {'$regex':filter.get("alamat_rumah"), "$options" : "i"},
-        'kelahiran.kedudukan_dalam_keluarga' : {'$regex':filter.get("kedudukan_dalam_keluarga"), "$options" : "i"},
-        'umum.nik' : {'$regex':filter.get("nik"), "$options" : "i"},
-        'kelahiran.nomor_kk' : {'$regex':filter.get("nomor_kk"), "$options" : "i"}
-        }).limit(5)
+            status_perkawinan:str = status_perkawinan
+            status_perkawinan = status_perkawinan.title()
+
+        if str(jenis_kelamin).lower() not in jenis_kelamin_check and str(jenis_kelamin) != '':
+              raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Insert 'laki-laki' or 'perempuan' in 'jenis_kelamin'")        
+
+        """
+            Filtering Data
+        """
+        cursor = col_buku_induk_penduduk.find({ 'umum.nama_lengkap' : {'$regex':nama_lengkap, "$options" : "i"}, 
+        'nikah_cerai.status_perkawinan' :status_perkawinan,
+        'kelahiran.tempat_lahir' : {'$regex':tempat_lahir, "$options" : "i"},
+        'umum.jenis_kelamin' : {'$regex':jenis_kelamin, "$options" : "i"},
+        'kelahiran.tanggal_lahir' : {'$regex':tanggal_lahir, "$options" : "i"},
+        'umum.agama' : {'$regex':agama, "$options" : "i"},
+        'umum.pendidikan_terakhir' : {'$regex':pendidikan_terakhir, "$options" : "i"},
+        'umum.pekerjaan' : {'$regex':pekerjaan, "$options" : "i"},
+        'umum.dapat_membaca_huruf' : {'$regex':dapat_membaca_huruf, "$options" : "i"},
+        'umum.kewarganegaraan' : {'$regex':kewarganegaraan, "$options" : "i"},
+        'umum.alamat_rumah' : {'$regex':alamat_rumah, "$options" : "i"},
+        'kelahiran.kedudukan_dalam_keluarga' : {'$regex':kedudukan_dalam_keluarga, "$options" : "i"},
+        'umum.nik' : {'$regex':nik, "$options" : "i"},
+        'kelahiran.nomor_kk' : {'$regex':nomor_kk, "$options" : "i"}
+        }).limit(20)
+        
         if not cursor:
             return False
         await buku_induk_penduduk(data=cursor)
