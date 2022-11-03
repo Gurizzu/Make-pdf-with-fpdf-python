@@ -338,20 +338,22 @@ async def find_buku(form:str,filter:dict):
         """
             Get Data From Body If field in Body is None replace with ''
         """
-        nama_lengkap = '' if not filter.get("nama_lengkap") else str(filter.get("nama_lengkap"))
-        tempat_lahir = '' if not filter.get("tempat_lahir") else str(filter.get("tempat_lahir"))
-        jenis_kelamin = '' if not filter.get("jenis_kelamin") else str(filter.get("jenis_kelamin"))
-        tanggal_lahir = '' if not filter.get("tanggal_lahir") else str(filter.get("tanggal_lahir"))
-        agama = '' if not filter.get("agama") else str(filter.get("agama"))
-        pendidikan_terakhir = '' if not filter.get("pendidikan_terakhir") else str(filter.get("pendidikan_terakhir"))
-        pekerjaan = '' if not filter.get("pekerjaan") else str(filter.get("pekerjaan"))
-        dapat_membaca_huruf = '' if not filter.get("dapat_membaca_huruf") else str(filter.get("dapat_membaca_huruf"))
-        kewarganegaraan = '' if not filter.get("kewarganegaraan") else str(filter.get("kewarganegaraan"))
-        alamat_rumah = '' if not filter.get("alamat_rumah") else str(filter.get("alamat_rumah"))
-        kedudukan_dalam_keluarga = '' if not filter.get("kedudukan_dalam_keluarga") else str(filter.get("kedudukan_dalam_keluarga"))
-        nik = '' if not filter.get("nik") else str(filter.get("nik"))
-        nomor_kk = '' if not filter.get("nomor_kk") else str(filter.get("nomor_kk"))
-        status_perkawinan = '' if not filter.get("status_perkawinan") else str(filter.get("status_perkawinan"))
+        nama_lengkap = '' if not filter.get("umum.nama_lengkap") else str(filter.get("umum.nama_lengkap"))
+        tempat_lahir = '' if not filter.get("kelahiran.tempat_lahir") else str(filter.get("kelahiran.tempat_lahir"))
+        jenis_kelamin = '' if not filter.get("umum.jenis_kelamin") else str(filter.get("umum.jenis_kelamin"))
+        tanggal_lahir = '' if not filter.get("kelahiran.tanggal_lahir") else str(filter.get("kelahiran.tanggal_lahir"))
+        agama = '' if not filter.get("umum.agama") else str(filter.get("umum.agama"))
+        pendidikan_terakhir = '' if not filter.get("umum.pendidikan_terakhir") else str(filter.get("umum.pendidikan_terakhir"))
+        pekerjaan = '' if not filter.get("umum.pekerjaan") else str(filter.get("umum.pekerjaan"))
+        dapat_membaca_huruf = '' if not filter.get("umum.dapat_membaca_huruf") else str(filter.get("umum.dapat_membaca_huruf"))
+        kewarganegaraan = '' if not filter.get("umum.kewarganegaraan") else str(filter.get("umum.kewarganegaraan"))
+        alamat_rumah = '' if not filter.get("umum.alamat_rumah") else str(filter.get("umum.alamat_rumah"))
+        kedudukan_dalam_keluarga = '' if not filter.get("kelahiran.kedudukan_dalam_keluarga") else str(filter.get("kelahiran.kedudukan_dalam_keluarga"))
+        nik = '' if not filter.get("umum.nik") else str(filter.get("umum.nik"))
+        nomor_kk = '' if not filter.get("kelahiran.nomor_kk") else str(filter.get("kelahiran.nomor_kk"))
+        status_perkawinan = '' if not filter.get("nikah_cerai.status_perkawinan") else str(filter.get("nikah_cerai.status_perkawinan"))
+        rw = '' if not filter.get("umum.rw") else str(filter.get("umum.rw"))
+        rt = '' if not filter.get("umum.rt") else str(filter.get("umum.rt"))
 
         if str(status_perkawinan).lower() not in status_perkawinan_check and str(status_perkawinan) != '':
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Insert 'kawin' or 'belum kawin' in 'status_kawin'")
@@ -368,7 +370,9 @@ async def find_buku(form:str,filter:dict):
         """
             Filtering Data
         """
-        cursor = col_buku_induk_penduduk.find({ 'umum.nama_lengkap' : {'$regex':nama_lengkap, "$options" : "i"}, 
+        cursor = col_buku_induk_penduduk.find({
+        
+        'umum.nama_lengkap' : {'$regex':nama_lengkap, "$options" : "i"}, 
         'nikah_cerai.status_perkawinan' :status_perkawinan,
         'kelahiran.tempat_lahir' : {'$regex':tempat_lahir, "$options" : "i"},
         'umum.jenis_kelamin' : {'$regex':jenis_kelamin, "$options" : "i"},
@@ -381,8 +385,11 @@ async def find_buku(form:str,filter:dict):
         'umum.alamat_rumah' : {'$regex':alamat_rumah, "$options" : "i"},
         'kelahiran.kedudukan_dalam_keluarga' : {'$regex':kedudukan_dalam_keluarga, "$options" : "i"},
         'umum.nik' : {'$regex':nik, "$options" : "i"},
-        'kelahiran.nomor_kk' : {'$regex':nomor_kk, "$options" : "i"}
-        }).limit(20)
+        'kelahiran.nomor_kk' : {'$regex':nomor_kk, "$options" : "i"},
+        'umum.rt' : {'$regex':rt, "$options" : "i"},
+        'umum.rw' : {'$regex':rw, "$options" : "i"}
+
+        }).limit(2000)
         
         if not cursor:
             return False
