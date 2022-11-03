@@ -53,9 +53,9 @@ async def all_surat(form:str, id:str):
     
     
 @router.post("/v2/generate/{form}")
-async def all_buku(form:str, filter:dict = Body(...)):
+async def all_buku(form:str, filter:schema.filter):
     form = form.lower()
-    data_buku = await database.find_buku(form,filter=filter)
+    data_buku = await database.find_buku(form,filter=filter.dict())
 
     if not data_buku:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")

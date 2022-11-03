@@ -126,20 +126,18 @@ class SuratNikahForm(BaseModel):
             }
         }
 
-class FilterBukuIndukPenduduk(BaseModel):
-    nama_lengkap: Optional[str] = ''
-    status_perkawinan: Optional[str] = ''
-    jenis_kelamin:Optional[str] = ''
-    tempat_lahir:Optional[str] = ''
-    tanggal_lahir:Optional[str] = ''
-    agama:Optional[str]=''
-    pendidikan_terakhir:Optional[str] = ''
-    pekerjaan:Optional[str] = ''
-    dapat_membaca_huruf:Optional[str] = ''
-    kewarganegaraan:Optional[str] = ''
-    alamat_rumah:Optional[str]= ''
-    kedudukan_dalam_keluarga:Optional[str] = ''
-    nik:Optional[str] = ''
-    nomor_kk:Optional[str] = ''
+class filter(BaseModel):
+    orderBy:str
+    order:str
+    filter:list
+
+    class Config:
+        schema_extra = {
+            "example": {
+              "orderBy": "",
+              "order": "",
+              "filter": [],
+            }
+        }
 
 
