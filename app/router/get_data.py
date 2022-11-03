@@ -10,7 +10,7 @@ from fastapi.responses import FileResponse
 
 router = APIRouter(
     prefix="/api",
-    tags=["get data"]
+    tags=["Generete Data"]
 )
 
 @router.get("/v1/generate/{form}/{id}")
