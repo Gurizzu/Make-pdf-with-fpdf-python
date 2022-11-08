@@ -1,11 +1,8 @@
 from fastapi import FastAPI
-from app.router import MkSuratDomisili , MkSuratKematian , MkSuratNikah, get_data
+from app.router import get_data
 
 app = FastAPI()
 
-# app.include_router(MkSuratDomisili.router)
-# app.include_router(MkSuratKematian.router)
-# app.include_router(MkSuratNikah.router)
 app.include_router(get_data.router)
 
 @app.get('/')

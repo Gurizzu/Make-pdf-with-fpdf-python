@@ -1,92 +1,55 @@
 # buku_kartu_tanda_penduduk_dan_buku_kartu_keluarga
-import json
 from xlsxwriter import Workbook
 
-async def buku_kartu_tanda_penduduk_dan_buku_kartu_keluarga(data:dict):
+async def buku_kartu_tanda_penduduk_dan_buku_kartu_keluarga(kepala_cursor,angota_cursor):
     bulks = []
-    for i in data:
-        anggota = i.get("anggota")
-        kepala = i.get("kepala")
 
-        if kepala:
-            for index in range(len(kepala)):
-                data1 = {}
-                orang = kepala[index]
-                # Get "umum" Object From anggota[index]
-                if orang.get("umum"):
-                    umum = orang.get("umum")
-                    data1["nama_lengkap"] = umum.get("nama_lengkap")
-                    data1["jenis_kelamin"] = umum.get("jenis_kelamin")
-                    data1["nik"] = umum.get("nik")
-                    data1["pekerjaan"] = umum.get("pekerjaan")
-                    data1["kebangsaan"] = umum.get("kebangsaan")
-                    data1["golongan_darah"] = umum.get("golongan_darah")
-                    data1["agama"] = umum.get("agama")
-                    data1["pendidikan_terakhir"] = umum.get("pendidikan_terakhir")
-                    data1["alamat_rumah"] = umum.get("alamat_rumah")
-                    data1["kewarganegaraan"] = umum.get("kewarganegaraan")
-                    data1["no_kk"] = str(i.get("no_kk"))
-                
-                # Get "kelahiran" Object From anggota[index]
-                if orang.get("kelahiran"):
-                    kelahiran = orang.get("kelahiran")
-                    data1["tempat_lahir"] = kelahiran.get("tempat_lahir")
-                    data1["tanggal_lahir"] = kelahiran.get("tanggal_lahir")
-                    data1["kedudukan_dalam_keluarga"] = kelahiran.get("kedudukan_dalam_keluarga")
-                    data1["nama_ayah_kandung"] = kelahiran.get("nama_ayah_kandung")
-                    data1["nama_ibu_kandung"] = kelahiran.get("nama_ibu_kandung")
+    for i in kepala_cursor:
+        data = {}
+        try:
+            data["nama_lengkap"] = i.get("kepala").get("umum").get("nama_lengkap")
+            data["kedudukan_dalam_keluarga"] = i.get("kepala").get("kelahiran").get("kedudukan_dalam_keluarga")
+            data["jenis_kelamin"] = i.get("kepala").get("umum").get("jenis_kelamin")
+            data["nik"] = i.get("kepala").get("umum").get("nik")
+            data["tempat_lahir"] = i.get("kepala").get("kelahiran").get("tempat_lahir")
+            data["tanggal_lahir"] = i.get("kepala").get("kelahiran").get("tanggal_lahir")
+            data["golongan_darah"] = i.get("kepala").get("umum").get("golongan_darah")
+            data["agama"] = i.get("kepala").get("umum").get("agama")
+            data["pendidikan_terakhir"] = i.get("kepala").get("umum").get("pendidikan_terakhir")
+            data["pekerjaan"] = i.get("kepala").get("umum").get("pekerjaan")
+            data["alamat_rumah"] = i.get("kepala").get("umum").get("alamat_rumah")
+            data["status_perkawinan"] = i.get("kepala").get("nikah_cerai").get("status_perkawinan")
+            data["kewarganegaraan"] = i.get("kepala").get("umum").get("kewarganegaraan")
+            data["nama_ibu_kandung"] = i.get("kepala").get("kelahiran").get("nama_ibu_kandung")
+            data["nama_ayah_kandung"] = i.get("kepala").get("kelahiran").get("nama_ayah_kandung")
+            data["no_kk"] = i.get("no_kk")
+            data["keterangan"] = i.get("kepala").get("lain_lain").get("keterangan")
+            bulks.append(data)
+        except:
+            continue
 
-                # Get "nikah_cerai" Object From anggota[index]
-                if orang.get("nikah_cerai"):
-                    perkawinan = orang.get("nikah_cerai")
-                    data1["status_perkawinan"] = perkawinan.get("status_perkawinan")
-
-                # Get "lain_lain" Object From anggota[index]
-                if orang.get("lain_lain"):
-                    lain_lain = orang.get("lain_lain")
-                    data1["keterangan"] = lain_lain.get("keterangan")
-                bulks.append(data1)
-
-        if anggota:
-            for index in range(len(anggota)):
-                data2 = {}
-                orang = anggota[index]
-                
-                # Get "umum" Object From anggota[index]
-                if orang.get("umum"):
-                    umum = orang.get("umum")
-                    data2["nama_lengkap"] = umum.get("nama_lengkap")
-                    data2["jenis_kelamin"] = umum.get("jenis_kelamin")
-                    data2["nik"] = umum.get("nik")
-                    data2["pekerjaan"] = umum.get("pekerjaan")
-                    data2["kebangsaan"] = umum.get("kebangsaan")
-                    data2["golongan_darah"] = umum.get("golongan_darah")
-                    data2["agama"] = umum.get("agama")
-                    data2["pendidikan_terakhir"] = umum.get("pendidikan_terakhir")
-                    data2["alamat_rumah"] = umum.get("alamat_rumah")
-                    data2["kewarganegaraan"] = umum.get("kewarganegaraan")
-                    data2["no_kk"] = str(i.get("no_kk"))
-                
-                # Get "kelahiran" Object From anggota[index]
-                if orang.get("kelahiran"):
-                    kelahiran = orang.get("kelahiran")
-                    data2["tempat_lahir"] = kelahiran.get("tempat_lahir")
-                    data2["tanggal_lahir"] = kelahiran.get("tanggal_lahir")
-                    data2["kedudukan_dalam_keluarga"] = kelahiran.get("kedudukan_dalam_keluarga")
-                    data2["nama_ayah_kandung"] = kelahiran.get("nama_ayah_kandung")
-                    data2["nama_ibu_kandung"] = kelahiran.get("nama_ibu_kandung")
-
-                # Get "nikah_cerai" Object From anggota[index]
-                if orang.get("nikah_cerai"):
-                    perkawinan = orang.get("nikah_cerai")
-                    data2["status_perkawinan"] = perkawinan.get("status_perkawinan")
-
-                # Get "lain_lain" Object From anggota[index]
-                if orang.get("lain_lain"):
-                    lain_lain = orang.get("lain_lain")
-                    data2["keterangan"] = lain_lain.get("keterangan")
-                bulks.append(data2)
-        else:
+    for i in angota_cursor:
+        data = {}
+        try:
+            data["nama_lengkap"] = i.get("anggota").get("umum").get("nama_lengkap")
+            data["kedudukan_dalam_keluarga"] = i.get("anggota").get("kelahiran").get("kedudukan_dalam_keluarga")
+            data["jenis_kelamin"] = i.get("anggota").get("umum").get("jenis_kelamin")
+            data["nik"] = i.get("anggota").get("umum").get("nik")
+            data["tempat_lahir"] = i.get("anggota").get("kelahiran").get("tempat_lahir")
+            data["tanggal_lahir"] = i.get("anggota").get("kelahiran").get("tanggal_lahir")
+            data["golongan_darah"] = i.get("anggota").get("umum").get("golongan_darah")
+            data["agama"] = i.get("anggota").get("umum").get("agama")
+            data["pendidikan_terakhir"] = i.get("anggota").get("umum").get("pendidikan_terakhir")
+            data["pekerjaan"] = i.get("anggota").get("umum").get("pekerjaan")
+            data["alamat_rumah"] = i.get("anggota").get("umum").get("alamat_rumah")
+            data["status_perkawinan"] = i.get("anggota").get("nikah_cerai").get("status_perkawinan")
+            data["kewarganegaraan"] = i.get("anggota").get("umum").get("kewarganegaraan")
+            data["nama_ibu_kandung"] = i.get("anggota").get("kelahiran").get("nama_ibu_kandung")
+            data["nama_ayah_kandung"] = i.get("anggota").get("kelahiran").get("nama_ayah_kandung")
+            data["no_kk"] = i.get("no_kk")
+            data["keterangan"] = i.get("anggota").get("lain_lain").get("keterangan")
+            bulks.append(data)
+        except:
             continue
             
 
@@ -203,3 +166,4 @@ async def buku_kartu_tanda_penduduk_dan_buku_kartu_keluarga(data:dict):
         worksheet.write(index+7+1, 16, entry.get("keterangan"),content)
 
     workbook.close()
+

@@ -1,4 +1,5 @@
 *.pdf
 *.xlsx
 venv/
+.env
 __pycache__

@@ -32,6 +32,7 @@ myclient = pymongo.MongoClient("mongodb://userdesa:desa123@192.168.247.22:27017/
 
 mydb = myclient["dev-sidesa"]
 
+
 surat_keterangan_domisili = mydb["surat_keterangan_domisili"]
 surat_keterangan_kematian = mydb["surat_keterangan_kematian"]
 surat_pengantar_nikah = mydb["surat_pengantar_nikah"]
@@ -70,24 +71,146 @@ col_buku_rencana_anggaran_biaya = mydb["buku_rencana_anggaran_biaya"]
 coll_buku_ktp_dan_buku_kk = mydb["v_buku_ktp_dan_buku_kk"]
 coll_buku_rekapitulasi_jumlah_penduduk = mydb["v_buku_rekapitulasi_jumlah_penduduk"]
 
+async def angota(filtered:dict):
+  query_anggota = [
+    {
+      "$limit" : 5
+    },
+    {
+      "$unwind": "$anggota"
+    },
+    {
+      "$match": {
+        "no_kk": {
+          "$regex": filtered.get('nomor_kk')
+        },
+        "anggota.umum.nama_lengkap": {
+          "$regex": filtered.get('nama_lengkap'),"$options": "i"
+        },
+        "anggota.umum.nik": {
+          "$regex": filtered.get('nik'),"$options": "i"
+        },
+        "anggota.umum.jenis_kelamin": {
+          "$regex": filtered.get('jenis_kelamin'),"$options": "i"
+        },
+        "anggota.kelahiran.tempat_lahir": {
+          "$regex": filtered.get('tempat_lahir'),"$options": "i"
+        },
+        "anggota.kelahiran.tanggal_lahir": {
+          "$regex": filtered.get('tanggal_lahir'),"$options": "i"
+        },
+        "anggota.umum.golongan_darah": {
+          "$regex": filtered.get('golongan_darah'),"$options": "i"
+        },
+        "anggota.umum.agama": {
+          "$regex": filtered.get('agama'),"$options": "i"
+        },
+        "anggota.umum.pendidikan_terakhir": {
+          "$regex": filtered.get('pendidikan_terakhir'),"$options": "i"
+        },
+        "anggota.umum.pekerjaan": {
+          "$regex": filtered.get('pekerjaan'),"$options": "i"
+        },
+        "anggota.umum.alamat_rumah": {
+          "$regex": filtered.get('alamat_rumah'),"$options": "i"
+        },
+        "anggota.nikah_cerai.status_perkawinan": filtered.get('status_perkawinan'),
+        "anggota.kelahiran.kedudukan_dalam_keluarga": {
+          "$regex": filtered.get('kedudukan_dalam_keluarga'),"$options": "i"
+        },
+        "anggota.umum.kewarganegaraan": {
+          "$regex": filtered.get('kewarganegaraan'),"$options": "i"
+        },
+        "anggota.kelahiran.nama_ibu_kandung": {
+          "$regex": filtered.get('nama_ibu_kandung'),"$options": "i"
+        },
+        "anggota.kelahiran.nama_ayah_kandung": {
+          "$regex": filtered.get('nama_ayah_kandung'),"$options": "i"
+        },
+        "anggota.lain_lain.keterangan": {
+          "$regex": filtered.get('keterangan'),"$options": "i"
+        },
+        "anggota.umum.rt": filtered.get("rt"),
+        "anggota.umum.rw": filtered.get("rw"),
+        "anggota.umum.dapat_membaca_huruf": {
+          "$regex": filtered.get('dapat_membaca_huruf'),"$options": "i"
+        }
+      },
+    },
+  ]
+  return coll_buku_ktp_dan_buku_kk.aggregate(query_anggota)
 
-async def make_domisisli(data:dict):
-    surat_keterangan_domisili.insert_one(data)
-    id = data.get('_id')
-    data["_id"] = str(id)
-    return data
+async def kepala(filtered:dict):
+  query_kepala = [
+    {
+      "$limit" : 5
+    },
+    {
+      "$unwind": "$kepala"
+    },
+    {
+      "$match": {
+        "no_kk": {
+          "$regex": filtered.get('nomor_kk')
+        },
+        "kepala.umum.nama_lengkap": {
+          "$regex": filtered.get('nama_lengkap'),"$options": "i"
+        },
+        "kepala.umum.nik": {
+          "$regex": filtered.get('nik'),"$options": "i"
+        },
+        "kepala.umum.jenis_kelamin": {
+          "$regex": filtered.get('jenis_kelamin'),"$options": "i"
+        },
+        "kepala.kelahiran.tempat_lahir": {
+          "$regex": filtered.get('tempat_lahir'),"$options": "i"
+        },
+        "kepala.kelahiran.tanggal_lahir": {
+          "$regex": filtered.get('tanggal_lahir'),"$options": "i"
+        },
+        "kepala.umum.golongan_darah": {
+          "$regex": filtered.get('golongan_darah'),"$options": "i"
+        },
+        "kepala.umum.agama": {
+          "$regex": filtered.get('agama'),"$options": "i"
+        },
+        "kepala.umum.pendidikan_terakhir": {
+          "$regex": filtered.get('pendidikan_terakhir'),"$options": "i"
+        },
+        "kepala.umum.pekerjaan": {
+          "$regex": filtered.get('pekerjaan'),"$options": "i"
+        },
+        "kepala.umum.alamat_rumah": {
+          "$regex": filtered.get('alamat_rumah'),"$options": "i"
+        },
+        "kepala.nikah_cerai.status_perkawinan": filtered.get('status_perkawinan'),
+        "kepala.kelahiran.kedudukan_dalam_keluarga": {
+          "$regex": filtered.get('kedudukan_dalam_keluarga'),"$options": "i"
+        },
+        "kepala.umum.kewarganegaraan": {
+          "$regex": filtered.get('kewarganegaraan'),"$options": "i"
+        },
+        "kepala.kelahiran.nama_ibu_kandung": {
+          "$regex": filtered.get('nama_ibu_kandung'),"$options": "i"
+        },
+        "kepala.kelahiran.nama_ayah_kandung": {
+          "$regex": filtered.get('nama_ayah_kandung'),"$options": "i"
+        },
+        "kepala.lain_lain.keterangan": {
+          "$regex": filtered.get('keterangan'),"$options": "i"
+        },
+        "kepala.umum.rt": filtered.get("rt"),
+        "kepala.umum.rw": filtered.get("rw"),
+        "kepala.umum.dapat_membaca_huruf": {
+          "$regex": filtered.get('dapat_membaca_huruf'),"$options": "i"
+        }
+      },
+    },
+  ]
+  return coll_buku_ktp_dan_buku_kk.aggregate(query_kepala)
 
-async def make_kematian(data:dict):
-    surat_keterangan_kematian.insert_one(data)
-    id = data.get('_id')
-    data["_id"] = str(id)
-    return data
-
-async def make_Nikah(data:dict):
-    surat_pengantar_nikah.insert_one(data)
-    id = data.get('_id')
-    data["_id"] = str(id)
-    return data
+async def get_data_ktp_dan_kk(filtered:dict):
+  return await angota(filtered=filtered), await kepala(filtered=filtered)
 
 async def find_one(form:str,id:str):
     
@@ -370,11 +493,23 @@ async def find_buku(form:str,filter:dict):
         if str(status_perkawinan).lower() not in status_perkawinan_check and str(status_perkawinan) != '':
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Insert 'kawin' or 'belum kawin' in 'status_kawin'")
 
-        if not status_perkawinan:
-            status_perkawinan = {'$regex':status_perkawinan}
+        # check if rt is not exist
+        if not rt:
+            rt = {'$regex':rt,"$options" : "i"}
         else:
+            rt:str = rt
+
+        # check if rt is not exist
+        if not rw:
+            rw = {'$regex':rw,"$options" : "i"}
+        else:
+            rw:str = rw
+
+        if status_perkawinan.lower() == "kawin" or status_perkawinan.lower() == "belum kawin":
             status_perkawinan:str = status_perkawinan
             status_perkawinan = status_perkawinan.title()
+        else:
+            status_perkawinan = {'$regex':status_perkawinan, "$options" : "i"}
 
         if str(jenis_kelamin).lower() not in jenis_kelamin_check and str(jenis_kelamin) != '':
               raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Insert 'laki-laki' or 'perempuan' in 'jenis_kelamin'")        
@@ -398,8 +533,8 @@ async def find_buku(form:str,filter:dict):
         'kelahiran.kedudukan_dalam_keluarga' : {'$regex':kedudukan_dalam_keluarga, "$options" : "i"},
         'umum.nik' : {'$regex':nik, "$options" : "i"},
         'kelahiran.nomor_kk' : {'$regex':nomor_kk, "$options" : "i"},
-        'umum.rt' : {'$regex':rt, "$options" : "i"},
-        'umum.rw' : {'$regex':rw, "$options" : "i"}
+        'umum.rt' : rt,
+        'umum.rw' : rw
 
         }).limit(1000)
         
@@ -426,10 +561,90 @@ async def find_buku(form:str,filter:dict):
         await buku_rencana_anggaran_biaya(data=cursor)
         return True
     elif form == "buku_kartu_tanda_penduduk_dan_buku_kartu_keluarga":
-        cursor = coll_buku_ktp_dan_buku_kk.find()
-        if not cursor:
-            return False
-        await buku_kartu_tanda_penduduk_dan_buku_kartu_keluarga(data=cursor)
+
+        data = filter.get("filter")
+        filtered:dict = {}
+        
+        try:
+            for i in data:
+                filtered[str(i.get("field"))] = str(i.get("value"))
+        except:
+            filtered = {}
+
+        # check some field
+        jenis_kelamin_check = ["laki-laki", "perempuan"]
+
+        """
+            Get Data From Body If field in Body is None replace with ''
+        """
+        nama_lengkap = '' if not filtered.get("umum.nama_lengkap") else str(filtered.get("umum.nama_lengkap"))
+        tempat_lahir = '' if not filtered.get("kelahiran.tempat_lahir") else str(filtered.get("kelahiran.tempat_lahir"))
+        jenis_kelamin = '' if not filtered.get("umum.jenis_kelamin") else str(filtered.get("umum.jenis_kelamin"))
+        tanggal_lahir = '' if not filtered.get("kelahiran.tanggal_lahir") else str(filtered.get("kelahiran.tanggal_lahir"))
+        agama = '' if not filtered.get("umum.agama") else str(filtered.get("umum.agama"))
+        pendidikan_terakhir = '' if not filtered.get("umum.pendidikan_terakhir") else str(filtered.get("umum.pendidikan_terakhir"))
+        pekerjaan = '' if not filtered.get("umum.pekerjaan") else str(filtered.get("umum.pekerjaan"))
+        dapat_membaca_huruf = '' if not filtered.get("umum.dapat_membaca_huruf") else str(filtered.get("umum.dapat_membaca_huruf"))
+        kewarganegaraan = '' if not filtered.get("umum.kewarganegaraan") else str(filtered.get("umum.kewarganegaraan"))
+        alamat_rumah = '' if not filtered.get("umum.alamat_rumah") else str(filtered.get("umum.alamat_rumah"))
+        kedudukan_dalam_keluarga = '' if not filtered.get("kelahiran.kedudukan_dalam_keluarga") else str(filtered.get("kelahiran.kedudukan_dalam_keluarga"))
+        nik = '' if not filtered.get("umum.nik") else str(filtered.get("umum.nik"))
+        nomor_kk = '' if not filtered.get("kelahiran.nomor_kk") else str(filtered.get("kelahiran.nomor_kk"))
+        status_perkawinan = '' if not filtered.get("nikah_cerai.status_perkawinan") else str(filtered.get("nikah_cerai.status_perkawinan"))
+        rw = '' if not filtered.get("umum.rw") else str(filtered.get("umum.rw"))
+        rt = '' if not filtered.get("umum.rt") else str(filtered.get("umum.rt"))
+        golongan_darah = '' if not filtered.get("umum.golongan_darah") else str(filtered.get("umum.golongan_darah"))
+        nama_ibu_kandung = '' if not filtered.get("kelahiran.nama_ibu_kandung") else str(filtered.get("kelahiran.nama_ibu_kandung"))
+        nama_ayah_kandung = '' if not filtered.get("kelahiran.nama_ayah_kandung") else str(filtered.get("kelahiran.nama_ayah_kandung"))
+        keterangan = '' if not filtered.get("lain_lain.keterangan") else str(filtered.get("lain_lain.keterangan"))
+
+        # check if rt is not exist
+        if not rt:
+            rt = {'$regex':rt}
+        else:
+            rt:str = rt
+
+        # check if rt is not exist
+        if not rw:
+            rw = {'$regex':rw}
+        else:
+            rw:str = rw
+
+        if status_perkawinan.lower() == "kawin" or status_perkawinan.lower() == "belum kawin":
+            status_perkawinan:str = status_perkawinan
+            status_perkawinan = status_perkawinan.title()
+        else:
+            status_perkawinan = {'$regex':status_perkawinan, "$options" : "i"}
+
+        if str(jenis_kelamin).lower() not in jenis_kelamin_check and str(jenis_kelamin) != '':
+              raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Insert 'laki-laki' or 'perempuan' in 'jenis_kelamin'")
+
+        data_filter={
+            "jenis_kelamin" : jenis_kelamin,
+            "status_perkawinan" : status_perkawinan,
+            "nama_lengkap": nama_lengkap,
+            "tempat_lahir":tempat_lahir,
+            "tanggal_lahir":tanggal_lahir,
+            "agama":agama,
+            "pendidikan_terakhir":pendidikan_terakhir,
+            "pekerjaan":pekerjaan,
+            "dapat_membaca_huruf":dapat_membaca_huruf,
+            "kewarganegaraan":kewarganegaraan,
+            "alamat_rumah":alamat_rumah,
+            "kedudukan_dalam_keluarga":kedudukan_dalam_keluarga,
+            "nik":nik,
+            "nomor_kk":nomor_kk,
+            "rw":rw,
+            "rt":rt,
+            "golongan_darah":golongan_darah,
+            "nama_ibu_kandung":nama_ibu_kandung,
+            "nama_ayah_kandung":nama_ayah_kandung,
+            "keterangan":keterangan
+        }
+
+        ang, kep = await get_data_ktp_dan_kk(filtered=data_filter)
+
+        await buku_kartu_tanda_penduduk_dan_buku_kartu_keluarga(angota_cursor=ang,kepala_cursor=kep)
         return True
     elif form == "buku_rekapitulasi_jumlah_penduduk":
         dusun_dusun = coll_buku_rekapitulasi_jumlah_penduduk.distinct("dusun")
@@ -462,8 +677,3 @@ async def find_buku_with_id(form:str,id:str):
         await buku_anggaran_pendapatan_dan_belanja_desa(data=cursor)
         return True
     
-
-# data = {"Menjadi" : "menjadi"}
-
-# domisili.insert_one(data)
-
